@@ -19,4 +19,4 @@ addons:
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS PROJECT;'
 
-script: ./test/test_app.py
+script: test_app.py
