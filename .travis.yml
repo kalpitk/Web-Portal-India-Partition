@@ -6,13 +6,8 @@ python:
 install:
   - pip install -r requirements.txt
 
-addons:
-  apt:
-   sources:
-    - mysql-5.7-trusty
-   packages:
-    - mysql-server
-    - mysql-client
+services:
+  - mysql
 
 before_install:
   - mysql -e 'source schema.sql;'
