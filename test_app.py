@@ -15,8 +15,6 @@ cursor = mydb.cursor(buffered=True)
 
 @pytest.fixture
 def client():
-    for line in open('schema.sql'):
-        cursor.execute(line)
     app.config['TESTING'] = True
     client = app.test_client()
     return client
@@ -33,4 +31,13 @@ def logout(client):
 
 def test_pages(client):
     res = client.get('/home')
-    assert res.status == '200 OK'
+    assert res.status_code == 200
+
+def test_login(client):
+    # test correct password
+    res = login(client, 'admin', 'admin')
+    assert res.status_code == 200
+
+    # test incorrect password
+    res = login(client, 'admin', 'incorrect_pass')
+    assert res.status_code == 401

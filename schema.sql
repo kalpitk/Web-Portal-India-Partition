@@ -1,2 +1,8 @@
 CREATE DATABASE IF NOT EXISTS PROJECT;
 USE PROJECT;
+
+CREATE TABLE IF NOT EXISTS users(
+    username VARCHAR(20), 
+    password VARCHAR(20)
+);
+INSERT INTO users VALUES ('admin','admin');
