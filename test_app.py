@@ -20,11 +20,18 @@ def client():
     return client
 
 def login(client, username, password):
-    return client.post('/login', data=dict(
-        username=username,
-        password=password
-    ), follow_redirects=True)
+    return client.post('/login', data = dict(
+        username = username,
+        password = password
+    ), follow_redirects = True)
 
+def signup(client, username, name, email, password):
+    return client.post('/sign_up', data = dict(
+        username = username,
+        name = name,
+        email = email,
+        password = password
+    ), follow_redirects = True)
 
 def logout(client):
     return client.get('/logout', follow_redirects=True)
@@ -37,7 +44,16 @@ def test_login(client):
     # test correct password
     res = login(client, 'admin', 'admin')
     assert res.status_code == 200
+    res = login(client, 'collab', 'collab')
+    assert res.status_code == 200
+    res = login(client, 'mod', 'mod')
+    assert res.status_code == 200
 
     # test incorrect password
     res = login(client, 'admin', 'incorrect_pass')
     assert res.status_code == 401
+
+def test_signup(client):
+    res = signup(client, 'user1', 'abc@example.com', 'User', 'password')
+    res = login(client, 'user1', 'password')
+    assert res.status_code == 200

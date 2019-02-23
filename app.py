@@ -17,12 +17,47 @@ cursor = mydb.cursor(buffered=True)
 def home():
   return render_template('home.html')
 
+
+@app.route("/sign_up", methods = ['POST', 'GET'])
+def sign_up():
+  username = request.form['username']
+  name = request.form['name']
+  password = request.form['password']
+  email = request.form['email']
+
+  cursor.execute("""SELECT COUNT(*) FROM user WHERE username = %s;""", (username,))
+  res = cursor.fetchone()
+  if res != 0 :
+    error = "Username already exists, please try another"
+
+  cursor.execute("""SELECT COUNT(*) FROM user WHERE email_id = %s;""", (email,))
+  res = cursor.fetchone()
+  if res != 0 :
+    error = "Email already registered, please try signing in"
+
+  if len(password) < 1 :
+    error = "Password too short"
+
+  if len(email) == 0 :
+    error = "Invalid Email"
+
+  if len(username) == 0 :
+    error = "Username too short"
+
+  if error:
+    return render_template('sign_up_page.html', error = error)
+
+  cursor.execute("""INSERT INTO user (username, name, email_id, password) VALUES (%s,%s,%s,%s)""", (username, name, email, password,))
+  mydb.commit()
+
+  return redirect(url_for('home'))
+
+
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
   username = request.form['username']
   password = request.form['password']
-  cursor.execute("""SELECT username, password FROM users
-                  WHERE username = %s;""", (username,))
+  cursor.execute("""SELECT username, password, email_id, Is_Moderator, Is_Admin, contributions FROM user WHERE username = %s;""", (username,))
   res = cursor.fetchall()
 
   if cursor.rowcount == 0 :
@@ -34,6 +69,8 @@ def login():
     return redirect(url_for('home'), code = 401)
 
   session['username'] = username
+  session['moderator'] = res[0][3]
+  session['admin'] = res[0][4]
 
   return redirect(url_for('home'))
 
