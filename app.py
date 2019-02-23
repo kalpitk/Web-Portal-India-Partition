@@ -24,14 +24,16 @@ def sign_up():
   name = request.form['name']
   password = request.form['password']
   email = request.form['email']
+  error = ""
 
   cursor.execute("""SELECT COUNT(*) FROM user WHERE username = %s;""", (username,))
-  res = cursor.fetchone()
+  res = cursor.fetchone()[0]
   if res != 0 :
     error = "Username already exists, please try another"
 
   cursor.execute("""SELECT COUNT(*) FROM user WHERE email_id = %s;""", (email,))
-  res = cursor.fetchone()
+  res = cursor.fetchone()[0]
+
   if res != 0 :
     error = "Email already registered, please try signing in"
 
@@ -44,7 +46,7 @@ def sign_up():
   if len(username) == 0 :
     error = "Username too short"
 
-  if error:
+  if len(error) :
     return render_template('sign_up_page.html', error = error)
 
   cursor.execute("""INSERT INTO user (username, name, email_id, password) VALUES (%s,%s,%s,%s)""", (username, name, email, password,))
