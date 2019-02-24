@@ -1,6 +1,5 @@
-import mysql.connector
-from flask import (Flask, g, redirect, render_template, request, session,
-                   url_for)
+import mysql.connector, hashlib
+from flask import (Flask, g, redirect, render_template, request, session, url_for)
 
 app = Flask(__name__)
 app.secret_key = 'sec key'
@@ -22,7 +21,7 @@ def home():
 def sign_up():
   username = request.form['username']
   name = request.form['name']
-  password = request.form['password']
+  password = hashlib.md5(request.form['password'].encode()).hexdigest()
   email = request.form['email']
   error = ""
 
@@ -37,16 +36,16 @@ def sign_up():
   if res != 0 :
     error = "Email already registered, please try signing in"
 
-  if len(password) < 1 :
-    error = "Password too short"
-
-  if len(email) == 0 :
+  if not email:
     error = "Invalid Email"
 
-  if len(username) == 0 :
+  if not username:
     error = "Username too short"
 
-  if len(error) :
+  if not name:
+    error = "Name too short"
+
+  if error:
     return render_template('sign_up_page.html', error = error)
 
   cursor.execute("""INSERT INTO user (username, name, email_id, password) VALUES (%s,%s,%s,%s)""", (username, name, email, password,))
@@ -58,7 +57,7 @@ def sign_up():
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
   username = request.form['username']
-  password = request.form['password']
+  password = hashlib.md5(request.form['password'].encode()).hexdigest()
   cursor.execute("""SELECT username, password, email_id, Is_Moderator, Is_Admin, contributions FROM user WHERE username = %s;""", (username,))
   res = cursor.fetchall()
 

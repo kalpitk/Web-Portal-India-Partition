@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS user;
 
 CREATE TABLE user(
 	username VARCHAR(20) PRIMARY KEY,
-	password VARCHAR(20) NOT NULL,
+	password VARCHAR(32) NOT NULL,
 	name VARCHAR(20) NOT NULL,
 	email_id VARCHAR(50) NOT NULL UNIQUE,
 	Is_Moderator BOOLEAN DEFAULT FALSE, 
@@ -51,6 +51,6 @@ CREATE TABLE comment(
 	FOREIGN KEY(post) REFERENCES post(post_id) ON DELETE CASCADE
 );
 
-INSERT INTO user VALUES ('admin','admin','Administrator','admin@example.com',TRUE,TRUE,0);
-INSERT INTO user VALUES ('mod','mod','Moderator','mod@example.com',TRUE,FALSE,0);
-INSERT INTO user VALUES ('collab','collab','Collaborator','collab@example.com',FALSE,FALSE,0);
+INSERT INTO user VALUES ('admin','21232f297a57a5a743894a0e4a801fc3','Administrator','admin@example.com',TRUE,TRUE,0);
+INSERT INTO user VALUES ('mod','ad148a3ca8bd0ef3b48c52454c493ec5','Moderator','mod@example.com',TRUE,FALSE,0);
+INSERT INTO user VALUES ('collab','d5029374377771fd628239fd1f4e9d02','Collaborator','collab@example.com',FALSE,FALSE,0);
