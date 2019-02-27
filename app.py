@@ -16,6 +16,13 @@ cursor = mydb.cursor(buffered=True)
 def home():
   return render_template('home.html')
 
+@app.route("/sign_up_page", methods = ['POST', 'GET'])
+def sign_up_page():
+  return render_template('sign_up_page.html')
+
+@app.route("/login_page", methods = ['POST', 'GET'])
+def login_page():
+  return render_template('login_page.html')
 
 @app.route("/sign_up", methods = ['POST', 'GET'])
 def sign_up():
