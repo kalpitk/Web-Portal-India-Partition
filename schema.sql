@@ -28,7 +28,7 @@ CREATE TABLE migration(
 
 CREATE TABLE post(
 	post_id INT PRIMARY KEY AUTO_INCREMENT,
-	namefarticle VARCHAR(255),
+	nameofarticle VARCHAR(255),
 	upvotes INT DEFAULT 0,
 	downvotes INT DEFAULT 0,
 	Is_Approved BOOLEAN DEFAULT FALSE,
