@@ -1,0 +1,54 @@
+<header>
+    <h1>The Profile page of {{user[0][0]}}</h1>
+</header>
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="well well-sm">
+                <div class="row">
+                   
+                    <div class="col-sm-6 col-md-8">
+                        {% if user %}
+                            <h4>Username : {{user[0][0]}}</h4>
+                            <h4>Name : {{user[0][1]}}</h4>
+                        {%else%}
+                            <h4>please log in</h4>
+                        {%endif%}
+                       
+                    
+                        <p>
+                            <!--i class="glyphicon glyphicon-envelope"></i-->{{user[0][2]}}
+                            <br />
+                            <!--i class="glyphicon glyphicon-"></i> At present he has no links linked-->
+                            {%for p in post%}
+                                <div>
+                                <a href="{{url_for("/post"+p[0]) }}>{{p[1]}}</a>
+                                </div>
+                            {% endfor%}
+                            <h4>
+                                {%if user[0][3]==1 %}
+                                Moderator
+                                {% endif%}
+                            </h4> 
+                            <h4>
+                                    {%if user[0][4]==1 %}
+                                    Admin
+                                    {% endif%}
+                            </h4>  
+                        
+                            <h4>contributions : {{user[0][5]}}</h4>
+                            <br />
+                        
+          
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
