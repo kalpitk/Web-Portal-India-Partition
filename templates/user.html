@@ -26,7 +26,7 @@
                             <!--i class="glyphicon glyphicon-"></i> At present he has no links linked-->
                             {%for p in post%}
                             <div>
-                                <a href={{url_for("post", post_id = p[0]) }}>{{p[1]}}</a>
+                                <a href="{{url_for('post', post_id = p[0]) }}">{{p[1]}}</a>
                                 </div>
                             {% endfor%}
 

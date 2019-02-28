@@ -57,3 +57,19 @@ def test_signup(client):
     res = signup(client, 'user1', 'abc@example.com', 'User', 'password')
     res = login(client, 'user1', 'password')
     assert res.status_code == 200
+
+def test_profile(client):
+    res = client.get('/profile/collab')
+    print res.data
+    assert res.data.find('Collab') != -1
+    assert res.data.find('collab@example.com') != -1
+    assert res.data.find('d5029374377771fd628239fd1f4e9d02') == -1
+    assert res.data.find('Moderator') == -1
+    assert res.data.find('Admin') == -1
+    assert res.data.find('href="/post/1"') != -1
+    res = client.get('/profile/admin')
+    assert res.data.find('Moderator') != -1
+    assert res.data.find('Admin') != -1
+    res = client.get('/profile/mod')
+    assert res.data.find('Moderator') != -1
+    assert res.data.find('Admin') == -1
