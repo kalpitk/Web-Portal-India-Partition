@@ -1,10 +1,8 @@
 import mysql.connector, hashlib
 from flask import (Flask, g, redirect, render_template, request, session, url_for)
-from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 app.secret_key = 'sec key'
-Bootstrap(app)
 
 mydb = mysql.connector.connect(
   host='localhost',
@@ -39,6 +37,9 @@ def profile(user=None):
   post = cursor.fetchall()
   return render_template('user.html',user=res,post=post)
 
+@app.route('/post/<post_id>')
+def post(post_id=None):
+  return render_template('home.html')
 
 @app.route("/sign_up", methods = ['POST', 'GET'])
 def sign_up():
