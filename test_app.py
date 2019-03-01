@@ -67,9 +67,24 @@ def test_profile(client):
     assert res.data.find('Moderator') == -1
     assert res.data.find('Admin') == -1
     assert res.data.find('/post/1') != -1
+    assert res.data.find('/post/2') == -1
     res = client.get('/profile/admin')
     assert res.data.find('Moderator') != -1
     assert res.data.find('Admin') != -1
     res = client.get('/profile/mod')
     assert res.data.find('Moderator') != -1
     assert res.data.find('Admin') == -1
+
+def test_posts(client):
+    res = client.get('/post/1')
+    assert res.status_code == 200
+    res = client.get('/post/2')
+    assert res.status_code != 200
+
+    login(client, 'mod', 'mod')
+    res = client.get('/post/2')
+    assert res.status_code == 200
+
+    login(client, 'collab', 'collab')
+    res = client.get('/post/2')
+    assert res.status_code != 200
