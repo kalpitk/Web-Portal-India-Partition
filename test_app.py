@@ -66,7 +66,7 @@ def test_profile(client):
     assert res.data.find('d5029374377771fd628239fd1f4e9d02') == -1
     assert res.data.find('Moderator') == -1
     assert res.data.find('Admin') == -1
-    assert res.data.find('href="/post/1"') != -1
+    assert res.data.find('/post/1') != -1
     res = client.get('/profile/admin')
     assert res.data.find('Moderator') != -1
     assert res.data.find('Admin') != -1

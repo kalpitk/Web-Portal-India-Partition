@@ -33,12 +33,12 @@ def index():
 def profile(user=None):
   cursor.execute("""SELECT username,name,email_id,Is_moderator,Is_admin,contributions FROM user WHERE username = %s;""", (user,))
   res = cursor.fetchall()
-  cursor.execute("""SELECT post_id,namefarticle FROM post WHERE writer_username = %s;""", (user,))
+  cursor.execute("""SELECT post_id,nameofarticle FROM post WHERE writer_username = %s;""", (user,))
   post = cursor.fetchall()
   return render_template('user.html',user=res,post=post)
 
 @app.route('/post/<post_id>/')
-def postpage(post_id):
+def post(post_id):
 	cursor.execute("""SELECT nameofarticle,upvotes,downvotes,content,video_link,post_time, 
                   writer_username,approver_username,migrated FROM post WHERE post_id = %s;""", (post_id,))
 	post_data = cursor.fetchall()
