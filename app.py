@@ -37,19 +37,14 @@ def profile(user=None):
   post = cursor.fetchall()
   return render_template('user.html',user=res,post=post)
 
-@app.route('/postpage/<post_id>/')
+@app.route('/post/<post_id>/')
 def postpage(post_id):
-	cursor.execute("""SELECT nameofarticle,upvotes,downvotes,content,video_link,post_time,"""+
-		"""writer_username,approver_username,migrated FROM post WHERE post_id = %s;""", (post_id))
+	cursor.execute("""SELECT nameofarticle,upvotes,downvotes,content,video_link,post_time, 
+                  writer_username,approver_username,migrated FROM post WHERE post_id = %s;""", (post_id,))
 	post_data = cursor.fetchall()
-	cursor.execute("""SELECT comment_id,name,comment FROM comment WHERE post = %s;""", (post_id))
+	cursor.execute("""SELECT comment_id,name,comment FROM comment WHERE post = %s;""", (post_id,))
 	comments = cursor.fetchall()
 	return render_template('postpage.html', data=post_data, comments=comments)
-
-
-@app.route('/post/<post_id>')
-def post(post_id=None):
-  return render_template('home.html')
 
 @app.route("/sign_up", methods = ['POST', 'GET'])
 def sign_up():
