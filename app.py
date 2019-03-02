@@ -46,6 +46,13 @@ def post(post_id):
 	comments = cursor.fetchall()
 	return render_template('postpage.html', data=post_data, comments=comments)
 
+@app.route('/Dashboard/<user>/')
+def dashboard(user):
+	cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
+		writer_username,migrated FROM post WHERE writer_username = %s;""", (user,))
+	post_data = cursor.fetchall()
+	return render_template('dashboard.html', data=post_data, user=user)
+
 @app.route("/sign_up", methods = ['POST', 'GET'])
 def sign_up():
   username = request.form['username']
