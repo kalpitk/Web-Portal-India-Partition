@@ -33,18 +33,22 @@ def index():
 def profile(user=None):
   cursor.execute("""SELECT username,name,email_id,Is_moderator,Is_admin,contributions FROM user WHERE username = %s;""", (user,))
   res = cursor.fetchall()
-  cursor.execute("""SELECT post_id,nameofarticle FROM post WHERE writer_username = %s;""", (user,))
+  cursor.execute("""SELECT post_id,nameofarticle FROM post WHERE writer_username = %s AND Is_Approved IS TRUE;""", (user,))
   post = cursor.fetchall()
   return render_template('user.html',user=res,post=post)
 
-@app.route('/post/<post_id>/')
+@app.route('/post/<post_id>')
 def post(post_id):
-	cursor.execute("""SELECT nameofarticle,upvotes,downvotes,content,video_link,post_time, 
-                  writer_username,approver_username,migrated FROM post WHERE post_id = %s;""", (post_id,))
-	post_data = cursor.fetchall()
-	cursor.execute("""SELECT comment_id,name,comment FROM comment WHERE post = %s;""", (post_id,))
-	comments = cursor.fetchall()
-	return render_template('postpage.html', data=post_data, comments=comments)
+  cursor.execute("""SELECT nameofarticle,upvotes,downvotes,content,video_link,post_time, 
+                  writer_username,approver_username,migrated,Is_Approved FROM post WHERE post_id = %s;""", (post_id,))
+  post_data = cursor.fetchall()
+
+  if post_data[0][9] == 0 and ('moderator' not in session or session.get('moderator') == 0) :
+    return redirect(url_for('lost'))
+
+  cursor.execute("""SELECT comment_id,name,comment FROM comment WHERE post = %s;""", (post_id,))
+  comments = cursor.fetchall()
+  return render_template('postpage.html', data=post_data, comments=comments)
 
 @app.route('/Dashboard/<user>/')
 def dashboard(user):
@@ -110,6 +114,10 @@ def login():
   session['admin'] = res[0][4]
 
   return redirect(url_for('home'))
+
+@app.route("/lost", methods = ['POST', 'GET'])
+def lost():
+  return render_template('lost.html')
 
 @app.route("/logout", methods = ['POST', 'GET'])
 def logout():
