@@ -3,6 +3,7 @@ from flask import (Flask, g, redirect, render_template, request, session, url_fo
 
 app = Flask(__name__)
 app.secret_key = 'sec key'
+app.url_map.strict_slashes = False
 
 mydb = mysql.connector.connect(
   host='localhost',
@@ -50,12 +51,16 @@ def post(post_id):
   comments = cursor.fetchall()
   return render_template('postpage.html', data=post_data, comments=comments)
 
-@app.route('/Dashboard/<user>/')
-def dashboard(user):
-	cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
+@app.route('/dashboard')
+def dashboard():
+  if session.get('username') is None:
+    return redirect(url_for('lost'))
+  user = session.get('username')
+
+  cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
 		writer_username,migrated FROM post WHERE writer_username = %s;""", (user,))
-	post_data = cursor.fetchall()
-	return render_template('dashboard.html', data=post_data, user=user)
+  post_data = cursor.fetchall()
+  return render_template('dashboard.html', data=post_data, user=user)
 
 @app.route("/sign_up", methods = ['POST', 'GET'])
 def sign_up():

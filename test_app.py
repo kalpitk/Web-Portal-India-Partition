@@ -36,31 +36,25 @@ def signup(client, username, name, email, password):
 def logout(client):
     return client.get('/logout', follow_redirects=True)
 
-def test_pages(client):
-    res = client.get('/home')
-    assert res.status_code == 200
+def test_home(client):
+    assert client.get('/home').status_code == 200
 
 def test_login(client):
     # test correct password
-    res = login(client, 'admin', 'admin')
-    assert res.status_code == 200
-    res = login(client, 'collab', 'collab')
-    assert res.status_code == 200
-    res = login(client, 'mod', 'mod')
-    assert res.status_code == 200
+    assert login(client, 'admin', 'admin').status_code == 200 
+    assert login(client, 'collab', 'collab').status_code == 200
+    assert login(client, 'mod', 'mod').status_code == 200
 
     # test incorrect password
-    res = login(client, 'admin', 'incorrect_pass')
-    assert res.status_code == 401
+    assert login(client, 'admin', 'incorrect_pass').status_code == 401
 
 def test_signup(client):
-    res = signup(client, 'user1', 'abc@example.com', 'User', 'password')
+    signup(client, 'user1', 'abc@example.com', 'User', 'password')
     res = login(client, 'user1', 'password')
     assert res.status_code == 200
 
 def test_profile(client):
     res = client.get('/profile/collab')
-    print res.data
     assert res.data.find('Collab') != -1
     assert res.data.find('collab@example.com') != -1
     assert res.data.find('d5029374377771fd628239fd1f4e9d02') == -1
@@ -76,15 +70,20 @@ def test_profile(client):
     assert res.data.find('Admin') == -1
 
 def test_posts(client):
-    res = client.get('/post/1')
-    assert res.status_code == 200
-    res = client.get('/post/2')
-    assert res.status_code != 200
+    assert client.get('/post/1').status_code == 200
+    assert client.get('/post/2').status_code != 200
 
-    login(client, 'mod', 'mod')
-    res = client.get('/post/2')
-    assert res.status_code == 200
+    login(client, 'mod', 'mod') 
+    assert client.get('/post/2').status_code == 200
 
     login(client, 'collab', 'collab')
-    res = client.get('/post/2')
-    assert res.status_code != 200
+    assert client.get('/post/2').status_code != 200
+
+def test_dashboard(client):
+    assert client.get('/dashboard').status_code != 200
+    
+    login(client, 'collab', 'collab')
+    res = client.get('/dashboard')
+    assert res.status_code == 200
+    assert res.data.find('/post/1') != -1
+    assert res.data.find('/post/2') != -1
