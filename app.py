@@ -15,7 +15,9 @@ cursor = mydb.cursor(buffered=True)
 
 @app.route("/home", methods = ['POST', 'GET'])
 def home():
-  return render_template('home.html')
+  cursor.execute("""SELECT src_lat, src_lng, dest_lat, dest_lng, mig_id FROM migration""")
+  res = cursor.fetchall()
+  return render_template('home.html', res = res)
 
 @app.route("/sign_up_page", methods = ['POST', 'GET'])
 def sign_up_page():
@@ -32,22 +34,22 @@ def index():
 
 @app.route('/profile/<user>')
 def profile(user=None):
-  cursor.execute("""SELECT username,name,email_id,Is_moderator,Is_admin,contributions FROM user WHERE username = %s;""", (user,))
+  cursor.execute("""SELECT username,name,email_id,Is_moderator,Is_admin,contributions FROM user WHERE username = %s""", (user,))
   res = cursor.fetchall()
-  cursor.execute("""SELECT post_id,nameofarticle FROM post WHERE writer_username = %s AND Is_Approved IS TRUE;""", (user,))
+  cursor.execute("""SELECT post_id,nameofarticle FROM post WHERE writer_username = %s AND Is_Approved IS TRUE""", (user,))
   post = cursor.fetchall()
   return render_template('user.html',user=res,post=post)
 
 @app.route('/post/<post_id>')
 def post(post_id):
   cursor.execute("""SELECT nameofarticle,upvotes,downvotes,content,video_link,post_time, 
-                  writer_username,approver_username,migrated,Is_Approved FROM post WHERE post_id = %s;""", (post_id,))
+                  writer_username,approver_username,migrated,Is_Approved FROM post WHERE post_id = %s""", (post_id,))
   post_data = cursor.fetchall()
 
   if post_data[0][9] == 0 and ('moderator' not in session or session.get('moderator') == 0) :
     return redirect(url_for('lost'))
 
-  cursor.execute("""SELECT comment_id,name,comment FROM comment WHERE post = %s;""", (post_id,))
+  cursor.execute("""SELECT comment_id,name,comment FROM comment WHERE post = %s""", (post_id,))
   comments = cursor.fetchall()
   return render_template('postpage.html', data=post_data, comments=comments)
 
@@ -58,7 +60,7 @@ def dashboard():
   user = session.get('username')
 
   cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
-		writer_username,migrated FROM post WHERE writer_username = %s;""", (user,))
+		writer_username,migrated FROM post WHERE writer_username = %s""", (user,))
   post_data = cursor.fetchall()
   return render_template('dashboard.html', data=post_data, user=user)
 
@@ -70,12 +72,12 @@ def sign_up():
   email = request.form['email']
   error = ""
 
-  cursor.execute("""SELECT COUNT(*) FROM user WHERE username = %s;""", (username,))
+  cursor.execute("""SELECT COUNT(*) FROM user WHERE username = %s""", (username,))
   res = cursor.fetchone()[0]
   if res != 0 :
     error = "Username already exists, please try another"
 
-  cursor.execute("""SELECT COUNT(*) FROM user WHERE email_id = %s;""", (email,))
+  cursor.execute("""SELECT COUNT(*) FROM user WHERE email_id = %s""", (email,))
   res = cursor.fetchone()[0]
 
   if res != 0 :
@@ -96,14 +98,14 @@ def sign_up():
   cursor.execute("""INSERT INTO user (username, name, email_id, password) VALUES (%s,%s,%s,%s)""", (username, name, email, password,))
   mydb.commit()
 
-  return redirect(url_for('home'))
+  return redirect(url_for('dashboard'))
 
 
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
   username = request.form['username']
   password = hashlib.md5(request.form['password'].encode()).hexdigest()
-  cursor.execute("""SELECT username, password, email_id, Is_Moderator, Is_Admin, contributions FROM user WHERE username = %s;""", (username,))
+  cursor.execute("""SELECT username, password, email_id, Is_Moderator, Is_Admin, contributions FROM user WHERE username = %s""", (username,))
   res = cursor.fetchall()
 
   if cursor.rowcount == 0 :
@@ -118,7 +120,7 @@ def login():
   session['moderator'] = res[0][3]
   session['admin'] = res[0][4]
 
-  return redirect(url_for('home'))
+  return redirect(url_for('dashboard'))
 
 @app.route("/lost", methods = ['POST', 'GET'])
 def lost():
