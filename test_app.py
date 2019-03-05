@@ -69,6 +69,8 @@ def test_profile(client):
     assert res.data.find('Moderator') != -1
     assert res.data.find('Admin') == -1
 
+    assert client.get('/profile/some_invalid_username').status_code != 200
+
 def test_posts(client):
     assert client.get('/post/1').status_code == 200
     assert client.get('/post/2').status_code != 200

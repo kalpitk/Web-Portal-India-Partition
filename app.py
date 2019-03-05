@@ -1,4 +1,4 @@
-import mysql.connector, hashlib
+import mysql.connector, hashlib, re
 from flask import (Flask, g, redirect, render_template, request, session, url_for)
 
 app = Flask(__name__)
@@ -27,15 +27,13 @@ def sign_up_page():
 def login_page():
   return render_template('login_page.html')
 
-@app.route("/index")
-def index():
-  return render_template('index.html')
-
-
 @app.route('/profile/<user>')
 def profile(user=None):
   cursor.execute("""SELECT username,name,email_id,Is_moderator,Is_admin,contributions FROM user WHERE username = %s""", (user,))
   res = cursor.fetchall()
+  if len(res) == 0:
+    return redirect(url_for('lost'))
+  
   cursor.execute("""SELECT post_id,nameofarticle FROM post WHERE writer_username = %s AND Is_Approved IS TRUE""", (user,))
   post = cursor.fetchall()
   return render_template('user.html',user=res,post=post)
@@ -91,6 +89,9 @@ def sign_up():
 
   if not name:
     error = "Name too short"
+
+  if any(re.findall(r'#|<|>', username)):
+    error = "Username cannot contain special characters"
 
   if error:
     return render_template('sign_up_page.html', error = error)
