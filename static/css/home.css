@@ -1,21 +1,7 @@
 
 
-* {
-	margin: 0px;
-	padding: 0px;
-}
 body {
-	background-color: lightpink
-}
-.head {
-	margin-top: -100px;
-	width: 100%;
-	font-size: 50px;
-	text-align: center;
-	color: white;
-	position: fixed;
-	background-color: green;
-	padding :20px;
+	background-color: lightblue
 }
 .footer 
 {
@@ -23,44 +9,9 @@ body {
 	height: 100px;
 	background-color: rgb(200,200,200);
 }
-.nav {
-	float: left;
-	margin: 0;
-	padding: 2.5px;
-	overflow: hidden;
-	position: fixed;
-	background-color: none;
-	top: 98px;
-	height: 100%;
-	width: 175px;
-  	text-align: center;
-}
-li {
-	list-style-type: none;
-}
-
-li a {
-	border: solid 1px green; 
-	display: block;
-	margin-bottom: 5px;
-	height: 20% ;
-	background-color: lightblue	;
-	color: blue;
-	padding: 10px 20px;
-	text-decoration: none;
-}
-li a:hover {
-	background-color: lightgreen;
-}
-a {
-	text-decoration: none;
-}
-a:hover {
-	color: blue;
-}
 .main {
-	margin-top: 100px;
-	margin-left: 185px;
+	margin-top: 10px;
+	margin-left: 10px;
 	margin-right: 300px;
 }
 .signin {
@@ -70,7 +21,7 @@ a:hover {
 	height: 500px;
 	width: 282px;
 }
-.GIF {
+.map {
 	border :solid black;
 	height: 600px;
 	width: 80%;

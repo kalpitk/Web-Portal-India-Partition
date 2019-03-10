@@ -1,76 +1,102 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-		<script src="{{ url_for('static', filename='js/map.js') }}"></script>
-		<script async defer
-		src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
-		</script>
-		<script> const coordinates = {{res|tojson|safe}} </script>
-		<title>Partition History</title>
-	</head>
 
-	<body>
-	
-		<header class="head">The Partition History</header>
-		<div class="nav">
-			<li><a href="#"><h2>Home</h2></a></li>
-			<li><a href="#"><h2>tab1</h2></a></li>
-			<li><a href="#"><h2>tab2</h2></a></li>
-			<li><a href="#"><h2>Support Us</h2></a></li>
-			<li><a href="#"><h2>About Us</h2></a></li>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+	<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+	</script>
+	<script> const coordinates = {{res|tojson|safe}} </script>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Partition Memories</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="{{url_for('home')}}">Home</a></li>
+				<li><a href="#">Top Posts</a></li>
+				<li><a href="#">Latests Posts</a></li>
+				<li><a href="#">About Us</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+				<li><a href="{{url_for('login_page')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+			</ul>
 		</div>
-		<form action="/sign_up_page">
-			<button type="submit">BCCC</button>
+	</nav>
+	<div class="signin">
+		<br></br>
+		<h1 style="border:solid green;text-align: center;">Log in</h1>
+		<br></br>
+		<form style="text-align: center" action="/login" method="POST">
+			<h3>User Name:</h3>
+			<input style="background-color: lightblue; height: 20px" type="text" name="username">
+			<br></br>
+			<h3>Password:</h3>
+			<input style="background-color: lightblue; height: 20px" type="password" name="password">
+			<br></br>
+			<input type="submit" value="Login" style="height:30px; width: 60px ">
 		</form>
-		<div class="signin">
-			<br></br>
-			<h1 style="border:solid green;text-align: center;">Log in</h1>
-			<br></br>
-			<form style="text-align: center" action="/login" method="POST">
-				<h3>User Name:</h3>
-				<input style ="background-color: lightblue; height: 20px" type="text" name="username">
-				<br></br>
-				<h3>Password:</h3>
-				<input style ="background-color: lightblue; height: 20px" type="password" name="password">
-				<br></br>
-				<input type="submit" value="Login" style="height:30px; width: 60px ">
-			</form>
-			<br></br>
-			<h4>Create Account<a href="#signup"> <button style="height:30px; width: 120px "> Signup</button> </a> </h4>
+		<br></br>
+		<h4>Create Account<a href="#signup"> <button style="height:30px; width: 120px "> Signup</button> </a> </h4>
+	</div>
+	<div class="main">
+		<div class="map" id="map">
 		</div>
-		<div class="main">
-			<div class="GIF" id="map">
-			</div>
-			<div class="postlink">
-				<a href="#post1"><h1>Post 1</h1></a>
-			</div>
-			<div class="postlink">
-				<a href="#post1" ><h1>Post 2</h1></a>
-			</div>
-			<div class="postlink">
-				<a href="#post1" ><h1>Post 3</h1></a>
-			</div>
-			<div class="postlink">
-				<a href="#post2" ><h1>Post 4</h1></a>
-			</div>
-			<div class="postlink">
-				<a href="#post2" ><h1>Post 5</h1></a>
-			</div>
-			<div class="postlink">
-				<a href="#post2" ><h1>Post 6</h1></a>
-			</div>
-			<div class="postlink">
-				<a href="#post2" ><h1>Post 7</h1></a>
-			</div>
-		</div>			
-		<div class="footer">
-			<!-- <h1>END</h1> -->
-			<br></br>
-			<a href="#"><h3>About</a> |
-			<a href="#">Help</a> |
-			<a href="#">Licence</a> |
-			<a href="#">Contact Us</h3></a>
+		<div class="postlink">
+			<a href="#post1">
+				<h1>Post 1</h1>
+			</a>
 		</div>
-	</body>
+		<div class="postlink">
+			<a href="#post1">
+				<h1>Post 2</h1>
+			</a>
+		</div>
+		<div class="postlink">
+			<a href="#post1">
+				<h1>Post 3</h1>
+			</a>
+		</div>
+		<div class="postlink">
+			<a href="#post2">
+				<h1>Post 4</h1>
+			</a>
+		</div>
+		<div class="postlink">
+			<a href="#post2">
+				<h1>Post 5</h1>
+			</a>
+		</div>
+		<div class="postlink">
+			<a href="#post2">
+				<h1>Post 6</h1>
+			</a>
+		</div>
+		<div class="postlink">
+			<a href="#post2">
+				<h1>Post 7</h1>
+			</a>
+		</div>
+	</div>
+	<div class="footer">
+		<!-- <h1>END</h1> -->
+		<br></br>
+		<a href="#">
+			<h3>About
+		</a> |
+		<a href="#">Help</a> |
+		<a href="#">Licence</a> |
+		<a href="#">Contact Us</h3></a>
+	</div>
+</body>
+
 </html>
