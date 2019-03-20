@@ -89,3 +89,12 @@ def test_dashboard(client):
     assert res.status_code == 200
     assert res.data.find('/post/1') != -1
     assert res.data.find('/post/2') != -1
+
+def test_post_list(client):
+    res = client.get('/post_list').data
+    assert res.find('/post/1') != -1
+    assert res.find('/post/3') != -1
+
+    res = client.get('/post_list?src_lat=-34.9&src_lng=150.7').data
+    assert res.find('/post/1') != -1
+    assert res.find('/post/3') != -1

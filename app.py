@@ -51,6 +51,33 @@ def post(post_id):
   comments = cursor.fetchall()
   return render_template('postpage.html', data=post_data, comments=comments)
 
+@app.route('/post_list')
+def post_list():
+  src_lat = request.args.get('src_lat')
+  src_lng = request.args.get('src_lng')
+  dest_lat = request.args.get('dest_lat')
+  dest_lng = request.args.get('dest_lng')
+
+  if src_lat == None and src_lng == None and dest_lat == None and dest_lng == None:
+    cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, migrated FROM post WHERE Is_Approved IS TRUE""")
+  elif src_lat != None and src_lng != None and dest_lat == None and dest_lng == None:
+    cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, src_lat,src_lng, dest_lat, dest_lng FROM post INNER JOIN migration 
+                        ON migrated = mig_id WHERE Is_Approved IS TRUE AND ((src_lat LIKE %s And src_lng LIKE %s) OR 
+                        (dest_lat LIKE %s And dest_lng LIKE %s))""", (src_lat, src_lng,src_lat, src_lng,))
+  elif src_lat == None and src_lng == None and dest_lat != None and dest_lng != None:
+    cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, src_lat,src_lng, dest_lat, dest_lng FROM post INNER JOIN migration 
+                        ON migrated = mig_id WHERE Is_Approved IS TRUE AND ((src_lat LIKE %s And src_lng LIKE %s) OR 
+                        (dest_lat LIKE %s And dest_lng LIKE %s))""", (dest_lat, dest_lng,dest_lat, dest_lng,))
+  elif src_lat != None and src_lng != None and dest_lat != None and dest_lng != None:
+    cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, src_lat,src_lng, dest_lat, dest_lng FROM post INNER JOIN migration 
+                        ON migrated = mig_id WHERE Is_Approved IS TRUE AND src_lat LIKE %s And src_lng LIKE %s AND dest_lat LIKE %s And dest_lng LIKE %s""", (src_lat,src_lng,dest_lat, dest_lng,))
+  else:
+    return redirect(url_for('lost'))
+
+  res = cursor.fetchall()
+  res.reverse()
+  return render_template('post_list.html', posts=res)
+
 @app.route('/dashboard')
 def dashboard():
   if session.get('username') is None:
@@ -58,7 +85,7 @@ def dashboard():
   user = session.get('username')
 
   cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
-		writer_username,migrated FROM post WHERE writer_username = %s""", (user,))
+		                writer_username,migrated FROM post WHERE writer_username = %s""", (user,))
   post_data = cursor.fetchall()
   return render_template('dashboard.html', data=post_data, user=user)
 

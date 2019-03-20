@@ -21,13 +21,13 @@ function addMarker(coord) {
         strokeWeight: 5
     });
     path.addListener('click', function () {
-        alert('path clicked');
+        window.open('/post_list?src_lat='+coord[0]+'&src_lng='+coord[1]+'&dest_lat='+coord[2]+'&dest_lng='+coord[3], '_self')
     });
     marker1.addListener('click', function () {
-        alert('source clicked');
+        window.open('/post_list?src_lat='+coord[0]+'&src_lng='+coord[1], '_self')
     });
     marker2.addListener('click', function () {
-        alert('destination clicked');
+        window.open('/post_list?dest_lat='+coord[2]+'&dest_lng='+coord[3], '_self')
     });
 }
 function initMap() {
