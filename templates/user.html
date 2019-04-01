@@ -1,52 +1,77 @@
-<header>
-    <h1></h1>
-</header>
+<html>
 
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
+<head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
 
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6">
-            <div class="well well-sm">
-                <div class="row">
+<body>
 
-                    <div class="col-sm-6 col-md-8">
-                        {% if user %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Partition Memories</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{{url_for('home')}}">Home</a></li>
+                <li><a href="{{ url_for('top_posts') }}">Top Posts</a></li>
+                <li><a id="latest" name="latest" href="{{url_for('post_list')}}">Latests Posts</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+                </li>
+                <li><a href="{{url_for('login_page')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="well well-sm">
+                    <div class="row">
+
+                        <div class="col-sm-6 col-md-8">
+                            {% if user %}
                             <h4>Username : {{user[0][0]}}</h4>
                             <h4>Name : {{user[0][1]}}</h4>
-                        {%endif%}
+                            {%endif%}
 
 
-                        <p>
-                            <!--i class="glyphicon glyphicon-envelope"></i-->
-                            <h4>Email : {{user[0][2]}}</h4>
-                            <br />
-                            <!--i class="glyphicon glyphicon-"></i> At present he has no links linked-->
-                            {%for p in post%}
-                            <div>
-                                <a href="{{url_for('post', post_id = p[0]) }}"><h4>{{p[1]}}</h4></a>
+                            <p>
+                                <!--i class="glyphicon glyphicon-envelope"></i-->
+                                <h4>Email : {{user[0][2]}}</h4>
+                                <br />
+                                <!--i class="glyphicon glyphicon-"></i> At present he has no links linked-->
+                                {%for p in post%}
+                                <div>
+                                    <a href="{{url_for('post', post_id = p[0]) }}">
+                                        <h4>{{p[1]}}</h4>
+                                    </a>
                                 </div>
-                            {% endfor%}
+                                {% endfor%}
 
-                            {%if user[0][3]==1 %}
+                                {%if user[0][3]==1 %}
                                 <h4>Moderator</h4>
-                            {% endif%}
+                                {% endif%}
 
-                            {%if user[0][4]==1 %}
+                                {%if user[0][4]==1 %}
                                 <h4>Admin</h4>
-                            {% endif%}
-                              
-                        
-                            <h4>Contributions : {{user[0][5]}}</h4>
-                            <br />
-                        
-          
+                                {% endif%}
+
+
+                                <h4>Contributions : {{user[0][5]}}</h4>
+                                <br />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</body>
+
+</html>

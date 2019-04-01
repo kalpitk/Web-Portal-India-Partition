@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import mysql.connector, hashlib, re
 from flask import (Flask, g, redirect, render_template, request, session, url_for)
 
@@ -55,6 +56,25 @@ def post(post_id):
   cursor.execute("""SELECT comment_id,name,comment FROM comment WHERE post = %s""", (post_id,))
   comments = cursor.fetchall()
   return render_template('postpage.html', data=post_data, comments=comments)
+
+@app.route('/top_posts')
+def top_posts():
+  cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, migrated FROM post WHERE Is_Approved IS TRUE ORDER BY upvotes""")
+  res = cursor.fetchall()
+  res.reverse()
+  return render_template('post_list.html', posts=res)
+
+@app.route('/search_post')
+def search_post():
+  query = request.args.get('query')
+  if 'query' not in request.args:
+    query = ''
+  query = '%' + query + '%'
+  print query
+  cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, migrated FROM post WHERE Is_Approved IS TRUE AND nameofarticle LIKE %s ORDER BY upvotes""", (query,))
+  res = cursor.fetchall()
+  res.reverse()
+  return render_template('post_list.html', posts=res)
 
 @app.route('/post_list')
 def post_list():

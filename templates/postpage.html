@@ -1,79 +1,106 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Post title</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<title>{{ data[0][0] }}</title>
 	<link rel="stylesheet" href="{{ url_for('static',filename='css/home.css')}}">
 	<style type="text/css">
-		.post{
+		.post {
 			background-color: #ffffff;
 			top: 100px;
 			height: 100%;
 			margin-left: 0px;
 		}
+
 		.main {
+			padding-top: 70px;
 			margin-top: 100px;
 			margin-left: 215px;
 			margin-right: 300px;
 		}
-		.content{
+
+		.content {
 			display: block;
 			height: auto;
 			margin-top: -100px;
-			margin-left: 20px; 
-			margin-right: 30px; 
+			margin-left: 20px;
+			margin-right: 30px;
 			padding-top: 100px;
 		}
-		.commentsection{
+
+		.commentsection {
 			display: block;
 			height: auto;
 			margin-left: 20px;
 		}
-		.comment{
+
+		.comment {
 			display: block;
-			width:90%;
-			border: solid blue 1px;	
+			width: 90%;
+			border: solid blue 1px;
 		}
 	</style>
 
 </head>
+
 <body style="background-color: lightblue;">
-	<header class="head">The Partition History</header>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Partition Memories</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="{{url_for('home')}}">Home</a></li>
+				<li><a href="{{ url_for('top_posts') }}">Top Posts</a></li>
+				<li><a id="latest" name="latest" href="{{url_for('post_list')}}">Latests Posts</a></li>
+				<li><a href="#">About Us</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+				</li>
+				<li><a href="{{url_for('login_page')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+			</ul>
+		</div>
+	</nav>
 	<div class="main">
 		<div class="post">
 			<br>
 			</br>
 			<h1 style="padding-left: 30px;"> {{ data[0][0] }}</h1>
 			<br></br>
-				<h3 style="padding-left: 20px;">Skip to</h3>
+			<h3 style="padding-left: 20px;">Skip to</h3>
 			<div style="padding-left: 30px;">
-			{% if data[0][8] %}
+				{% if data[0][8] %}
 				<a href="#AM"> About migration </a><br>
-			{% endif %}
+				{% endif %}
 				<a href="#video"> Videos </a>
 			</div>
 
 			<br></br>
-			<div class="content" >
+			<div class="content">
 				<h2>Context</h2>
-				<p>{{ data[0][3] }}</p>			
+				<p>{{ data[0][3] }}</p>
 			</div>
 			{% if data[0][8] %}
 			<br></br>
 			<div class="content" id="AM">
-				
 				<h2>About migration</h2>
 				<p>Migration </p>
-
 			</div>
 			{% endif %}
 			<div style="margin-right: 30px;float: right;">
-				<p>written by: <p style="color: orange"> {{ data[0][6] }} </p></p>
-				<p>posted on: <p style="color: red"> {{ data[0][5] }} </p></p>
+				<p>written by: <p style="color: orange"> {{ data[0][6] }} </p>
+				<p>posted on: <p style="color: red"> {{ data[0][5] }} </p>
 			</div>
 			<br></br>
 			<div class="content">
 				<h2 id="video">Videos</h2>
-				<iframe width="560" height="315" src="{{ data[0][4] }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				<iframe width="560" height="315" src="{{ data[0][4] }}" frameborder="0"
+					allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+					allowfullscreen></iframe>
 			</div>
 			<br></br>
 			<div class="commentsection">
@@ -97,4 +124,5 @@
 		</div>
 	</div>
 </body>
+
 </html>

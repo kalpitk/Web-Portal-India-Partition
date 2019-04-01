@@ -6,7 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 	<script src="{{ url_for('static', filename='js/map.js') }}"></script>
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
@@ -15,19 +14,20 @@
 </head>
 
 <body>
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-inverse navbar-static-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#">Partition Memories</a>
 			</div>
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="{{url_for('home')}}">Home</a></li>
-				<li><a href="#">Top Posts</a></li>
+				<li><a href="{{ url_for('top_posts') }}">Top Posts</a></li>
 				<li><a id="latest" name="latest" href="{{url_for('post_list')}}">Latests Posts</a></li>
 				<li><a href="#">About Us</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+				<li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+				</li>
 				<li><a href="{{url_for('login_page')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 			</ul>
 		</div>
@@ -36,37 +36,37 @@
 		<br></br>
 		<h1 style="border:solid green;text-align: center;">News</h1>
 		<br></br>
-       <ul>
-		   <li>adsadds</li>
-		   <li>adsadds</li>
-		   <li>adsadds</li>
-		   <li>adsadds</li>
-		   <li>adsadds</li>
-	   </ul>
-		
+		<ul>
+			<li>adsadds</li>
+			<li>adsadds</li>
+			<li>adsadds</li>
+			<li>adsadds</li>
+			<li>adsadds</li>
+		</ul>
+
 	</div>
 	<div class="main">
 		<div class="map" id="map">
 		</div>
 		<table>
-
-				
+			<tr>
 					<tr>	
-						{% for post in posts %}
-						<th>
+			<tr>
+				{% for post in posts %}
+					<th>
 						<div class="postlink">
-							<a href="{{url_for('post', post_id = post[0]) }}"><h4 style="text-align: center;">{{post[1]}}</h4>
+							<a href="{{url_for('post', post_id = post[0]) }}">
+								<h4 style="text-align: center;">{{post[1]}}</h4>
 							</a>
 						</div>
-						</th>
-						{% endfor %}
-					</tr>
-			</table>
+					</th>
+				{% endfor %}
+			</tr>
+		</table>
 	</div>
 
 
 	<div class="footer">
-		<!-- <h1>END</h1> -->
 		<br></br>
 		<a href="#">
 			<h3>About

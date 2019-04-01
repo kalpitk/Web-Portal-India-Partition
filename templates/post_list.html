@@ -2,24 +2,45 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <style>
         .postlink {
-            background-color: rgba(222,222,222,0.5);
+            background-color: rgba(222, 222, 222, 0.5);
             margin-bottom: 30px;
-            border :solid 1px ;
-        } 
+            border: solid 1px;
+        }
     </style>
 </head>
 
 <body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Partition Memories</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="{{url_for('home')}}">Home</a></li>
+                <li><a href="{{ url_for('top_posts') }}">Top Posts</a></li>
+                <li><a id="latest" name="latest" href="{{url_for('post_list')}}">Latests Posts</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span>
+                        Sign Up</a>
+                </li>
+                <li><a href="{{url_for('login_page')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+        </div>
+    </nav>
     {% for post in posts %}
     <div class="postlink">
-        <a href="{{url_for('post', post_id = post[0]) }}"><h4>{{post[1]}}</h4></a>
+        <a href="{{url_for('post', post_id = post[0]) }}">
+            <h4>{{post[1]}}</h4>
+        </a>
     </div>
     {% endfor %}
 </body>

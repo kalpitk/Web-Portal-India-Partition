@@ -1,20 +1,40 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    </head>
 
-    <body>
-        <form method="POST" action="/login" class="container">
-            <div class="form-group">
-                <label class="has-float-label">Username</label>
-                <input type="text" name="username" class="form-control">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Partition Memories</a>
             </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-    </body>
+            <ul class="nav navbar-nav">
+                <li><a href="{{url_for('home')}}">Home</a></li>
+                <li><a href="{{ url_for('top_posts') }}">Top Posts</a></li>
+                <li><a id="latest" name="latest" href="{{url_for('post_list')}}">Latests Posts</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+                </li>
+                <li class="active"><a href="{{url_for('login_page')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+        </div>
+    </nav>
+    <form method="POST" action="/login" class="container">
+        <div class="form-group">
+            <label class="has-float-label">Username</label>
+            <input type="text" name="username" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</body>
+
 </html>

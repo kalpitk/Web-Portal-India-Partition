@@ -59,13 +59,13 @@ INSERT INTO user VALUES ('collab','d5029374377771fd628239fd1f4e9d02','Collaborat
 INSERT INTO migration VALUES (1, -34.90, 150.7, -32.3, 149.6);
 INSERT INTO migration VALUES (2, -34.90, 150.7, -32.9, 150);
 
-INSERT INTO post (nameofarticle, content, video_link, post_time, writer_username, approver_username, Is_Approved, migrated) VALUES ('Post1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'https://www.youtube.com/embed/aJaSCqPvwOA', '2019-02-28 10:00:00', 'collab', 'mod', TRUE, 1);
+INSERT INTO post (nameofarticle, content, video_link, post_time, writer_username, approver_username, Is_Approved, migrated, upvotes) VALUES ('Post1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'https://www.youtube.com/embed/aJaSCqPvwOA', '2019-02-28 10:00:00', 'collab', 'mod', TRUE, 1, 1);
 INSERT INTO post (nameofarticle, content, video_link, post_time, writer_username, approver_username) VALUES ('Post2', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'https://www.youtube.com/embed/aJaSCqPvwOA', '2019-02-28 10:00:00', 'collab', NULL);
 INSERT INTO post (nameofarticle, content, video_link, post_time, writer_username, approver_username, Is_Approved, migrated) VALUES ('Post3', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'https://www.youtube.com/embed/aJaSCqPvwOA', '2019-02-28 10:00:00', 'collab', 'mod', TRUE, 2);
 
-INSERT INTO comment VALUES(1,'name1','comment1',1,'2019-03-24 10:00:00');
-INSERT INTO comment VALUES(2,'name2','comment2',1,'2019-03-25 10:00:00');
-INSERT INTO comment VALUES(3,'name3','comment3',1,'2019-03-27 10:00:00');
-INSERT INTO comment VALUES(4,'name1','comment1',2,'2019-03-28 10:00:00');
-INSERT INTO comment VALUES(5,'name2','comment2',2,'2019-03-29 10:00:00');
+INSERT INTO comment VALUES(1,'Name1','Great Article !',1,'2019-03-24 10:00:00');
+INSERT INTO comment VALUES(2,'Name2','Some Comment 1',1,'2019-03-25 10:00:00');
+INSERT INTO comment VALUES(3,'Name3','Some Comment 2',1,'2019-03-27 10:00:00');
+INSERT INTO comment VALUES(4,'Name1','Great Article !',2,'2019-03-28 10:00:00');
+INSERT INTO comment VALUES(5,'Name2','Some Comment 1',2,'2019-03-29 10:00:00');
 
