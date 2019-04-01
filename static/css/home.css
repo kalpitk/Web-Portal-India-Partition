@@ -1,13 +1,13 @@
 
 
 body {
-	background-color: lightblue
+	background-color:  rgb(236, 177, 177)
 }
 .footer 
 {
 	text-align: center;
 	height: 100px;
-	background-color: rgb(200,200,200);
+	background-color: rgb(240, 221, 221);
 }
 .main {
 	margin-top: 10px;
@@ -19,7 +19,7 @@ body {
 	float: right;
 	/*position: fixed;*/
 	height: 500px;
-	width: 282px;
+	width: 500px;
 }
 .map {
 	border :solid black;
@@ -28,6 +28,8 @@ body {
 }
 .postlink {
 	background-color: rgba(222,222,222,0.5);
-	margin-bottom: 30px;
+	height: 200px;
+	width: 500px;
+	margin-top: 30px;
 	border :solid 1px ;
 } 
