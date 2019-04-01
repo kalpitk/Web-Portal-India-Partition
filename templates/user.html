@@ -6,7 +6,7 @@
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 
-<body>
+<body style="padding-top: 70px;">
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
@@ -14,7 +14,7 @@
                 <a class="navbar-brand" href="#">Partition Memories</a>
             </div>
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{{url_for('home')}}">Home</a></li>
+                <li><a href="{{url_for('home')}}">Home</a></li>
                 <li><a href="{{ url_for('top_posts') }}">Top Posts</a></li>
                 <li><a id="latest" name="latest" href="{{url_for('post_list')}}">Latests Posts</a></li>
                 <li><a href="#">About Us</a></li>
