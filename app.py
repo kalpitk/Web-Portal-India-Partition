@@ -17,7 +17,12 @@ cursor = mydb.cursor(buffered=True)
 def home():
   cursor.execute("""SELECT src_lat, src_lng, dest_lat, dest_lng, mig_id FROM migration""")
   res = cursor.fetchall()
-  return render_template('home.html', res = res)
+
+  cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, migrated FROM post WHERE Is_Approved IS TRUE""")
+  posts = cursor.fetchall()
+  posts.reverse()
+
+  return render_template('home.html', res = res, posts = posts)
 
 @app.route("/sign_up_page", methods = ['POST', 'GET'])
 def sign_up_page():
