@@ -13,7 +13,7 @@ mydb = mysql.connector.connect(
   database = 'PROJECT'
 )
 cursor = mydb.cursor(buffered=True)
-
+@app.route("/")
 @app.route("/home", methods = ['POST', 'GET'])
 def home():
   cursor.execute("""SELECT src_lat, src_lng, dest_lat, dest_lng, mig_id FROM migration""")
@@ -46,16 +46,49 @@ def profile(user=None):
 
 @app.route('/post/<post_id>')
 def post(post_id):
-  cursor.execute("""SELECT nameofarticle,upvotes,downvotes,content,video_link,post_time, 
+  if session.get('username') is None:
+	  user = ""
+  else:
+		user = session.get('username')
+
+  cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,video_link,post_time, 
                   writer_username,approver_username,migrated,Is_Approved FROM post WHERE post_id = %s""", (post_id,))
   post_data = cursor.fetchall()
 
-  if post_data[0][9] == 0 and ('moderator' not in session or session.get('moderator') == 0) :
+  if post_data[0][9] == 0 and (session.get('admin') == 0 or session.get('moderator') == 0) :
     return redirect(url_for('lost'))
-
   cursor.execute("""SELECT comment_id,name,comment FROM comment WHERE post = %s""", (post_id,))
   comments = cursor.fetchall()
-  return render_template('postpage.html', data=post_data, comments=comments)
+  return render_template('postpage.html', data=post_data, comments=comments, user=user)
+
+@app.route('/post/<post_id>/addcomment', methods = ['POST', 'GET'])
+def addcomment(post_id):
+  error=""
+  mycomment = request.form['mycomment']
+  if not mycomment:
+		error="comment is empty"
+  if session.get('username') is None:
+		myname = request.form['myname']
+		if not myname:
+			error="Name cant be empty"
+  else:
+		myname = session.get('username')
+  if not error:
+    cursor.execute("""INSERT INTO comment(name,comment,post) values(%s,%s,%s)""", (myname,mycomment,post_id,))
+    mydb.commit()
+  return redirect(url_for('post',post_id=post_id, error=error))
+
+@app.route('/post/<post_id>/deletecomment/<comment_id>')
+def deletecomment(post_id,comment_id):
+	user = session.get('username')
+	if user:
+		# (bug) what if user has same name as other(non loggedin comment)--------
+		cursor.execute("""SELECT comment_id FROM comment 
+			WHERE name=%s AND comment_id=%s""", (user,comment_id,))
+		if cursor.fetchall():
+			cursor.execute("""DELETE FROM comment WHERE comment_id=%s""", (comment_id,))
+		mydb.commit()
+	return redirect(url_for('post',post_id=post_id))
 
 @app.route('/top_posts')
 def top_posts():
@@ -108,11 +141,36 @@ def dashboard():
   if session.get('username') is None:
     return redirect(url_for('lost'))
   user = session.get('username')
-
   cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
 		                writer_username,migrated FROM post WHERE writer_username = %s""", (user,))
-  post_data = cursor.fetchall()
-  return render_template('dashboard.html', data=post_data, user=user)
+  posted_list = cursor.fetchall()
+  cursor.execute("""SELECT Is_Moderator,Is_Admin FROM user WHERE username = %s""", (user,))
+  me = cursor.fetchall()
+
+  if not me[0][0] and not me[0][1]:
+		return render_template('dashboard.html', data=posted_list, user=user, ismod=False, isadmin=False)
+  if me[0][0] :
+		cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
+						writer_username,migrated FROM post 
+						WHERE Is_Approved= FALSE""",)
+		unapproved_list= cursor.fetchall()
+		if not me[0][1]:
+			return render_template('dashboard.html', data=posted_list, user=user,
+							unapproved_list=unapproved_list, ismod=True, isadmin=False)
+		else:
+			cursor.execute("""SELECT username,name,email_id,contributions FROM user
+					 WHERE Is_Moderator = TRUE AND Is_Admin= FALSE""")
+			moderators_list=cursor.fetchall()
+			return render_template('dashboard.html', data=posted_list, user=user,
+					unapproved_list=unapproved_list, mods=moderators_list, ismod=True, isadmin=True)
+
+#not working--
+@app.route('/dashboard/delmod/<username>')
+def removeMod(username):
+	if session.get('admin') == 0:
+		cursor.execute("""UPDATE user SET Is_Moderator=FALSE WHERE username=%s""", (username,))
+		mydb.commit()
+	return redirect(url_for('dashboard'))
 
 @app.route("/sign_up", methods = ['POST', 'GET'])
 def sign_up():

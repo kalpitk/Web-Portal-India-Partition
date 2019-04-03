@@ -3,8 +3,36 @@
 
 <head>
 	<title>Dashboard</title>
-	<link rel="stylesheet" href="{{ url_for('static',filename='css/home.css')}}">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<script>
+		function show(shown) {
+			if (shown=='posted') {
+				document.getElementById('posted').style.display='';
+				document.getElementById('unapp').style.display='none';
+				document.getElementById('mods').style.display='none';
+			} 
+			else if(shown=='unapp'){
+				document.getElementById('posted').style.display='none';
+				document.getElementById('unapp').style.display='';
+				document.getElementById('mods').style.display='none';	
+			}
+			else
+			{
+				document.getElementById('posted').style.display='none';
+				document.getElementById('unapp').style.display='none';
+				document.getElementById('mods').style.display='';
+			}
+			document.getElementById(shown).style.display='';
+			return false;
+		}
+		$(document).ready(function(){
+			$('[data-toggle="tooltip"]').tooltip();   
+		});
+	</script>
 	<style type="text/css">
 		.postlist {
 			background-color: white;
@@ -35,71 +63,127 @@
 			width: 42px;
 			text-align: center;
 		}
-
-		.main {
-			padding-top: 70px;
-			margin-top: 30px;
-			margin-left: 215px;
-			margin-right: 300px;
-		}
-
-		.button {
-			float: right;
-			border: brown solid 1px;
-			padding: 5px;
-		}
-
-		.button:hover {
-			background-color: rgba(100, 250, 100, 0.2);
-		}
 	</style>
 
 </head>
 
-<body style="background-color: lightblue;">
-	<nav class="navbar navbar-inverse navbar-static-top">
+<body style="background-color: #1199ff;padding-top: 70px;">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#">Partition Memories</a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="{{url_for('home')}}">Home</a></li>
+				<li><a href="{{url_for('home')}}">Home</a></li>
 				<li><a href="{{ url_for('top_posts') }}">Top Posts</a></li>
 				<li><a id="latest" name="latest" href="{{url_for('post_list')}}">Latests Posts</a></li>
 				<li><a href="#">About Us</a></li>
 			</ul>
+			{% if user %}
+			<ul class="nav navbar-nav navbar-right">
+				<li class="active"><a href="{{ url_for('dashboard') }}" ><span class="glyphicon glyphicon-user"></span> Dashboard</a></li>
+				<li><a href="{{ url_for('profile', user=user)}}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+				<li><a href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+			</ul>
+			{% else %}
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
 				</li>
 				<li><a href="{{url_for('login_page')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 			</ul>
+			{% endif %}
 		</div>
 	</nav>
-	<div class="main">
-		<div class="button">
-			<a href="http://localhost:5000/profile/{{ user }}">toProfile</a>
-		</div>
-		<div class="postlist">
-			{% for p in data %}
-
-			<div class="post">
-
-				<div class="votes">
-					<p style="color: green;"> +{{ p[2] }}</p>
-					<p style="color: red">-{{ p[3] }}</p>
-				</div>
-
-				<div class="postlink">
-					<header>
-						<a href="{{url_for('post', post_id = p[0]) }}">
-							<h1>{{ p[1] }}</h1>
-						</a>
-					</header>
-
-					<p>about post</p>
-				</div>
+	<div class="container" style="background-color: white;">
+		<div style="min-height: 600px;">
+			{% if ismod %}
+			<ul class="nav nav-tabs" style="margin-bottom: 0px;">
+				<li><a href="#posted" onclick="return show('posted');">posted</a></li>
+				<li><a href="#unapp" onclick="return show('unapp');">Unapproved</a></li>
+				{% if isadmin %}
+					<li><a href="#mods" onclick="return show('mods');">moderators</a></li>
+				{% endif %}
+			</ul>
+			{% endif %}
+			<div id="posted" class="postlist well" style="padding-left: 0px;">
+				<h3>posted</h3>
+				{% if not(data) %}
+				<div class="alert alert-info" style="width: 200px;margin:20px;">
+					No posts are posted yet<strong>!</strong>
+				</div>		
+				{% else %}
+				{% for p in data %}
+					<div class="post">
+						<div class="votes">
+							<p style="color: green;"> +{{ p[2] }}</p>
+							<p style="color: red">-{{ p[3] }}</p>
+						</div>
+						<!-- add unapproved tag -->
+						<div class="postlink">
+							<header>
+								<a href="{{url_for('post', post_id = p[0]) }}"><h1>{{ p[1] }}</h1>	</a>
+							</header>
+							<p>about post</p>
+						</div>
+					</div>
+				{% endfor %}
+				{% endif %}
 			</div>
+
+			{% if ismod %}
+			<div id="unapp" class="postlist well" style="padding-left: 0px;display: none;">
+				<h3>unapproved</h3>
+			{% if not(unapproved_list) %}
+				<div class="alert alert-success" style="width: 300px;margin:20px;">
+					No unapproved post left.<strong>WELL DONE!</strong>
+				</div>
+			{% else %}
+			{% for u in unapproved_list %}
+				<div class="post">
+					<div class="votes">
+						<p style="color: green;"> +{{ u[2] }}</p>
+						<p style="color: red">-{{ u[3] }}</p>
+					</div>
+					<div class="postlink">
+						<header>
+							<a href="{{ url_for('post',post_id= u[0]) }}">{{ u[1] }}</a>
+						</header>					
+						<p>about post</p>
+					</div>
+				</div>
 			{% endfor %}
+			{% endif %}
+			</div>
+			{% endif %}
+
+			{% if isadmin %}
+			<div id="mods" class="postlist well" style="padding-left: 0px;display: none;">
+				<h3>Moderators</h3>
+			{% for m in mods %}
+				<div class="post">
+					<div class="votes">
+						<p style="color: green;"> +{{ m[3] }}</p>
+					</div>
+					<div class="postlink">
+						<div  style="float: right;" data-toggle="tooltip" data-placement="top" title="Demote">
+							<a href="{{ url_for('removeMod',username=m[0]) }} " 
+							class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
+						</div>
+						<a href="{{ url_for('profile',user = m[0]) }}">{{ m[0] }}</a>
+						<b> as {{ m[1] }}</b>
+					</div>
+				</div>
+			{% endfor %}
+			</div>
+			{% endif %}
+		</div>
+		<div class="row" style="background-color: #76ECFE;text-align: center;">
+			<br>
+			<a href="#"><h3>About</a> |
+			<a href="#">Help</a> |
+			<a href="#">Licence</a> |
+			<a href="#">Contact Us</h3></a>
+			</br>
 		</div>
 	</div>
 </body>
