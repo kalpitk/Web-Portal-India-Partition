@@ -11,6 +11,19 @@
 	<script>
 		$(document).ready(function(){
 			$('[data-toggle="tooltip"]').tooltip();   
+			$("#approve_post").click(function () {
+				var http = new XMLHttpRequest();
+				var url = "{{url_for('approve_post')}}";
+				http.open("POST", url, true);
+				http.onreadystatechange = function() {
+					if(http.readyState == 4 && http.status == 200) {
+						$("#approve_post").hide();
+					}
+				}
+				var data1 = new FormData();
+				data1.append('post_id', '{{data[0][0]}}');
+				http.send(data1);
+			})
 		});
 	</script>
 
@@ -46,7 +59,10 @@
 	<div class="container"  style="background-color: white;">
 		<div>
 			<br></br>
-			<h1> {{ data[0][1] }}</h1>
+			<h1> {{ data[0][1] }}
+			{% if session.get('moderator') and not data[0][10] %}
+			<button id="approve_post" name="approve_post" class="btn btn-primary">Approve</button>
+			{% endif %}</h1>
 			
 			<blockquote>
 			<div class="row" >

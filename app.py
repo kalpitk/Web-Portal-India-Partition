@@ -13,6 +13,8 @@ mydb = mysql.connector.connect(
   database = 'PROJECT'
 )
 cursor = mydb.cursor(buffered=True)
+
+
 @app.route("/")
 @app.route("/home", methods = ['POST', 'GET'])
 def home():
@@ -32,6 +34,17 @@ def sign_up_page():
 @app.route("/login_page", methods = ['POST', 'GET'])
 def login_page():
   return render_template('login_page.html')
+
+@app.route("/approve_post", methods = ['POST', 'GET'])
+def approve_post():
+  post_id = request.form['post_id']
+  success = True
+  try:
+    print(post_id)
+    cursor.execute("UPDATE post SET Is_Approved=TRUE WHERE post_id=%s;",(post_id,))
+  except:
+    success = False
+  return str(success)
 
 @app.route('/profile/<user>')
 def profile(user=None):
