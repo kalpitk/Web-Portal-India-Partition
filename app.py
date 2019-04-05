@@ -167,7 +167,7 @@ def dashboard():
 #not working--
 @app.route('/dashboard/delmod/<username>')
 def removeMod(username):
-	if session.get('admin') == 0:
+	if session.get('admin'):
 		cursor.execute("""UPDATE user SET Is_Moderator=FALSE WHERE username=%s""", (username,))
 		mydb.commit()
 	return redirect(url_for('dashboard'))

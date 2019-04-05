@@ -42,7 +42,7 @@
 	</nav>
 	<div class="container" style="background-color: white;">
 
-		<div class="signin">
+		<div class="signin" style="width:400px;">
 			<br></br>
 			<h1 style="border:solid green;text-align: center;">News</h1>
 			<br></br>
@@ -64,7 +64,7 @@
 						<tr>
 							{% for post in posts %}
 							<th>
-								<div class="postlink">
+								<div class="postlink" style="height: auto;padding:20px;width:200px;">
 							<a href="{{url_for('post', post_id = post[0]) }}">
 								<h4 style="text-align: center;">{{post[1]}}</h4>
 							</a>
