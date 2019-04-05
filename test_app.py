@@ -73,13 +73,14 @@ def test_profile(client):
 
 def test_posts(client):
     assert client.get('/post/1').status_code == 200
-    assert client.get('/post/2').status_code != 200
+    assert client.get('/post/2').status_code == 302
 
     login(client, 'mod', 'mod') 
     assert client.get('/post/2').status_code == 200
 
     login(client, 'collab', 'collab')
-    assert client.get('/post/2').status_code != 200
+    assert client.get('/post/2').status_code == 200
+    assert client.get('/post/4').status_code == 200
 
 def test_dashboard(client):
     assert client.get('/dashboard').status_code != 200
@@ -98,3 +99,4 @@ def test_post_list(client):
     res = client.get('/post_list?src_lat=-34.9&src_lng=150.7').data
     assert res.find('/post/1') != -1
     assert res.find('/post/3') != -1
+

@@ -37,7 +37,9 @@ def login_page():
 
 @app.route("/approve_post", methods = ['POST', 'GET'])
 def approve_post():
-  post_id = request.form['post_id']
+  post_id = request.form.get('post_id')
+  if not session.get('moderator') or post_id == None:
+    return str(False)
   success = True
   try:
     print(post_id)
@@ -68,7 +70,7 @@ def post(post_id):
                   writer_username,approver_username,migrated,Is_Approved FROM post WHERE post_id = %s""", (post_id,))
   post_data = cursor.fetchall()
 
-  if post_data[0][9] == 0 and (session.get('admin') == 0 or session.get('moderator') == 0) :
+  if not post_data[0][9] and not session.get('moderator') and user != post_data[0][7]:
     return redirect(url_for('lost'))
   cursor.execute("""SELECT comment_id,name,comment FROM comment WHERE post = %s""", (post_id,))
   comments = cursor.fetchall()
@@ -177,7 +179,6 @@ def dashboard():
 			return render_template('dashboard.html', data=posted_list, user=user,
 					unapproved_list=unapproved_list, mods=moderators_list, ismod=True, isadmin=True)
 
-#not working--
 @app.route('/dashboard/delmod/<username>')
 def removeMod(username):
 	if session.get('admin'):
