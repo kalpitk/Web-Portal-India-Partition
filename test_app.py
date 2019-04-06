@@ -80,7 +80,7 @@ def test_posts(client):
 
     login(client, 'collab', 'collab')
     assert client.get('/post/2').status_code == 200
-    assert client.get('/post/4').status_code == 200
+    assert client.get('/post/4').status_code != 200
 
 def test_dashboard(client):
     assert client.get('/dashboard').status_code != 200

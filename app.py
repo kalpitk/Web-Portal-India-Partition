@@ -72,7 +72,7 @@ def post(post_id):
 
   if not post_data[0][9] and not session.get('moderator') and user != post_data[0][7]:
     return redirect(url_for('lost'))
-  cursor.execute("""SELECT comment_id,name,comment FROM comment WHERE post = %s""", (post_id,))
+  cursor.execute("""SELECT comment_id,name,comment,commented_time,is_user FROM comment WHERE post = %s""", (post_id,))
   comments = cursor.fetchall()
   return render_template('postpage.html', data=post_data, comments=comments, user=user)
 
@@ -80,6 +80,7 @@ def post(post_id):
 def addcomment(post_id):
   error=""
   mycomment = request.form['mycomment']
+  isUser = False
   if not mycomment:
 		error="comment is empty"
   if session.get('username') is None:
@@ -87,9 +88,10 @@ def addcomment(post_id):
 		if not myname:
 			error="Name cant be empty"
   else:
-		myname = session.get('username')
+    isUser = True
+    myname = session.get('username')
   if not error:
-    cursor.execute("""INSERT INTO comment(name,comment,post) values(%s,%s,%s)""", (myname,mycomment,post_id,))
+    cursor.execute("""INSERT INTO comment(name,comment,post,commented_time,is_user) values(%s,%s,%s,NOW(),%s)""", (myname,mycomment,post_id,isUser,))
     mydb.commit()
   return redirect(url_for('post',post_id=post_id, error=error))
 
@@ -97,17 +99,17 @@ def addcomment(post_id):
 def deletecomment(post_id,comment_id):
 	user = session.get('username')
 	if user:
-		# (bug) what if user has same name as other(non loggedin comment)--------
 		cursor.execute("""SELECT comment_id FROM comment 
-			WHERE name=%s AND comment_id=%s""", (user,comment_id,))
+			WHERE name=%s AND comment_id=%s AND post=%s AND is_user IS TRUE""", (user,comment_id,post_id,))
 		if cursor.fetchall():
-			cursor.execute("""DELETE FROM comment WHERE comment_id=%s""", (comment_id,))
+			cursor.execute("""DELETE FROM comment WHERE comment_id=%s AND post=%s AND is_user IS TRUE""", (comment_id,post_id,))
 		mydb.commit()
 	return redirect(url_for('post',post_id=post_id))
 
 @app.route('/top_posts')
 def top_posts():
-  cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, migrated FROM post WHERE Is_Approved IS TRUE ORDER BY upvotes""")
+  cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
+						     writer_username,migrated FROM post WHERE Is_Approved IS TRUE ORDER BY upvotes""")
   res = cursor.fetchall()
   res.reverse()
   return render_template('post_list.html', posts=res)
@@ -119,7 +121,9 @@ def search_post():
     query = ''
   query = '%' + query + '%'
   print query
-  cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, migrated FROM post WHERE Is_Approved IS TRUE AND nameofarticle LIKE %s ORDER BY upvotes""", (query,))
+  cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
+						     writer_username,migrated FROM post WHERE Is_Approved IS TRUE AND nameofarticle 
+                 LIKE %s ORDER BY upvotes""", (query,))
   res = cursor.fetchall()
   res.reverse()
   return render_template('post_list.html', posts=res)
@@ -132,18 +136,23 @@ def post_list():
   dest_lng = request.args.get('dest_lng')
 
   if src_lat == None and src_lng == None and dest_lat == None and dest_lng == None:
-    cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, migrated FROM post WHERE Is_Approved IS TRUE""")
+    cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
+						     writer_username,migrated FROM post WHERE Is_Approved IS TRUE""")
   elif src_lat != None and src_lng != None and dest_lat == None and dest_lng == None:
-    cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, src_lat,src_lng, dest_lat, dest_lng FROM post INNER JOIN migration 
-                        ON migrated = mig_id WHERE Is_Approved IS TRUE AND ((src_lat LIKE %s And src_lng LIKE %s) OR 
-                        (dest_lat LIKE %s And dest_lng LIKE %s))""", (src_lat, src_lng,src_lat, src_lng,))
+    cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
+						        writer_username,migrated FROM post INNER JOIN migration 
+                    ON migrated = mig_id WHERE Is_Approved IS TRUE AND ((src_lat LIKE %s And src_lng LIKE %s) OR 
+                    (dest_lat LIKE %s And dest_lng LIKE %s))""", (src_lat, src_lng,src_lat, src_lng,))
   elif src_lat == None and src_lng == None and dest_lat != None and dest_lng != None:
-    cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, src_lat,src_lng, dest_lat, dest_lng FROM post INNER JOIN migration 
-                        ON migrated = mig_id WHERE Is_Approved IS TRUE AND ((src_lat LIKE %s And src_lng LIKE %s) OR 
-                        (dest_lat LIKE %s And dest_lng LIKE %s))""", (dest_lat, dest_lng,dest_lat, dest_lng,))
+    cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
+						       writer_username,migrated FROM post INNER JOIN migration 
+                   ON migrated = mig_id WHERE Is_Approved IS TRUE AND ((src_lat LIKE %s And src_lng LIKE %s) OR 
+                   (dest_lat LIKE %s And dest_lng LIKE %s))""", (dest_lat, dest_lng,dest_lat, dest_lng,))
   elif src_lat != None and src_lng != None and dest_lat != None and dest_lng != None:
-    cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, src_lat,src_lng, dest_lat, dest_lng FROM post INNER JOIN migration 
-                        ON migrated = mig_id WHERE Is_Approved IS TRUE AND src_lat LIKE %s And src_lng LIKE %s AND dest_lat LIKE %s And dest_lng LIKE %s""", (src_lat,src_lng,dest_lat, dest_lng,))
+    cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
+						       writer_username,migrated FROM post INNER JOIN migration 
+                   ON migrated = mig_id WHERE Is_Approved IS TRUE AND src_lat LIKE %s 
+                   And src_lng LIKE %s AND dest_lat LIKE %s And dest_lng LIKE %s""", (src_lat,src_lng,dest_lat, dest_lng,))
   else:
     return redirect(url_for('lost'))
 
@@ -167,7 +176,7 @@ def dashboard():
   if me[0][0] :
 		cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
 						writer_username,migrated FROM post 
-						WHERE Is_Approved= FALSE""",)
+						WHERE Is_Approved= FALSE""")
 		unapproved_list= cursor.fetchall()
 		if not me[0][1]:
 			return render_template('dashboard.html', data=posted_list, user=user,

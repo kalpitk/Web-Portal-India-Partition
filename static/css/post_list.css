@@ -1,0 +1,29 @@
+.postlist {
+    background-color: white;
+    padding-top: 30px;
+    min-height: 300px;
+}
+
+.post {
+    border: solid lightblue 2px;
+    background-color: rgb(224, 244, 224);
+    height: auto;
+    margin: 5px;
+    margin-bottom: 15px;
+}
+
+.postlink {
+    margin-left: 42px;
+    background-color: rgba(222, 222, 222, 1);
+    padding: 10px;
+    margin-bottom: 0px;
+    border: solid 1px;
+}
+
+.votes {
+    float: left;
+    padding: 2px;
+    padding-top: 15px;
+    width: 42px;
+    text-align: center;
+}

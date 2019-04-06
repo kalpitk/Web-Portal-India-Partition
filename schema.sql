@@ -49,6 +49,7 @@ CREATE TABLE comment(
 	comment TEXT NOT NULL,
 	post INT NOT NULL,
 	commented_time TIMESTAMP NOT NULL,
+	is_user BOOLEAN,
 	FOREIGN KEY(post) REFERENCES post(post_id) ON DELETE CASCADE
 );
 
@@ -71,9 +72,9 @@ INSERT INTO post (nameofarticle, content, video_link, post_time, writer_username
 INSERT INTO post (nameofarticle, content, video_link, post_time, writer_username, approver_username, Is_Approved) VALUES ('Post10', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'https://www.youtube.com/embed/aJaSCqPvwOA', '2019-02-28 10:00:00', 'collab',NULL,  FALSE);
 INSERT INTO post (nameofarticle, content, video_link, post_time, writer_username, approver_username, Is_Approved) VALUES ('Post11', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'https://www.youtube.com/embed/aJaSCqPvwOA', '2019-02-28 10:00:00', 'collab',NULL,  FALSE);
 
-INSERT INTO comment VALUES(1,'Name1','Great Article !',1,'2019-03-24 10:00:00');
-INSERT INTO comment VALUES(2,'Name2','Some Comment 1',1,'2019-03-25 10:00:00');
-INSERT INTO comment VALUES(3,'Name3','Some Comment 2',1,'2019-03-27 10:00:00');
-INSERT INTO comment VALUES(4,'Name1','Great Article !',2,'2019-03-28 10:00:00');
-INSERT INTO comment VALUES(5,'Name2','Some Comment 1',2,'2019-03-29 10:00:00');
+INSERT INTO comment VALUES(1,'collab','Great Article !',1,'2019-03-24 10:00:00',TRUE);
+INSERT INTO comment VALUES(2,'mod','Some Comment 1',1,'2019-03-25 10:00:00',TRUE);
+INSERT INTO comment VALUES(3,'Name3','Some Comment 2',1,'2019-03-27 10:00:00',FALSE);
+INSERT INTO comment VALUES(4,'Name1','Great Article !',2,'2019-03-28 10:00:00',FALSE);
+INSERT INTO comment VALUES(5,'Name2','Some Comment 1',2,'2019-03-29 10:00:00',FALSE);
 

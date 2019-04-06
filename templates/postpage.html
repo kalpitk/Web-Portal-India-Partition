@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-	<title>{{ data[0][0] }}</title>
+	<title>{{ data[0][1] }}</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	<script>
@@ -110,11 +110,11 @@
 					<div class="well well-sm col-lg-6">
 					<form method="POST" action="/post/{{data[0][0]}}/addcomment" >
 						<div class="form-group">
-							<label class="has-float-label">write a comment</label>
+							<label class="has-float-label">Write a comment</label>
 							<input type="text" name="mycomment" class="form-control" placeholder="leave a comment">
 						</div>
 						{% if user %}
-							<div class="row"><div class="col-lg-6"><p>posting as <b style="color: green;">{{ user }}</b></p></div></div>
+							<div class="row"><div class="col-lg-6"><p>Posting as <b style="color: green;">{{ user }}</b></p></div></div>
 						{% else %}
 							<div class="row">
 							<div class="form-group col-lg-6">
@@ -137,7 +137,7 @@
 						<div class="panel panel-info" style="margin-bottom: -5px;">
 							<div class="panel-heading" style="padding:0px;">
 								<p><b style="color: red;font-size :15px;">{{ c[1] }}</b> on <b style="color: #555555;">{{ c[3] }}</b> says</p>
-								{% if c[1]==user %}
+								{% if c[1]==user and c[4] %}
 								<div  style="float: right;" data-toggle="tooltip" data-placement="top" title="Delete">
 									<a href="/post/{{ data[0][0] }}/deletecomment/{{ c[0] }}" 
 									class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
