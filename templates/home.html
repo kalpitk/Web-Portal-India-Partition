@@ -6,7 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+	<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}"> -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/post_list.css') }}">
 	<script src="{{ url_for('static', filename='js/map.js') }}"></script>
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
 	</script>
@@ -41,42 +42,45 @@
 		</div>
 	</nav>
 	<div class="container" style="background-color: white;">
-
-		<div class="signin" style="width:400px;">
-			<br></br>
-			<h1 style="border:solid green;text-align: center;">News</h1>
-			<br></br>
-			<ul>
-				<li>adsadds</li>
-			<li>adsadds</li>
-			<li>adsadds</li>
-			<li>adsadds</li>
-			<li>adsadds</li>
-		</ul>
-		
-	</div>
-	<div class="main">
-		<div class="map" id="map">
-		</div>
-		<table>
-			<tr>
-					<tr>	
-						<tr>
+		<div style="min-height: 600px">
+			<div class="row" style="margin: 20px;">
+				<div class=" col-lg-8 col-md-8" style="border-right:solid #1199ff 1px;">
+					<div style="min-height:400px;" id="map">
+					</div>
+					<div class="row" style="margin:2px;">
 							{% for post in posts %}
-							<th>
-								<div class="postlink" style="height: auto;padding:20px;width:200px;">
-							<a href="{{url_for('post', post_id = post[0]) }}">
-								<h4 style="text-align: center;">{{post[1]}}</h4>
-							</a>
-						</div>
-					</th>
-					{% endfor %}
-				</tr>
-			</table>
+							<div class="post">
+								<div class="votes">
+									<p style="color: green;"> +{{ post[2] }}</p>
+									<p style="color: red">-{{ post[3] }}</p>
+								</div>
+								<div class="postlink">
+									<header>
+										<a href="{{ url_for('post',post_id= post[0]) }}">{{ post[1] }}</a>
+									</header>					
+									<p>about post</p>
+								</div>
+							</div>
+							{% endfor %}
+					</div>
+				</div>
+				
+				<div class=" col-lg-4 col-md-4">
+					<div class="well signin2 " style="position: fixed;min-width: 20%;max-width: 30%;padding-top: 0px;">
+					<h1 >News</h1>
+					<ul>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					</div>
+				</ul>
+				</div>
+			</div>
+
 		</div>
-		
-		
-		<div class="footer">
+		<div class="row" style="background-color: #76ECFE;text-align: center;">
 			<br>
 			<a href="#">
 				<h3>About

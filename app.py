@@ -21,7 +21,8 @@ def home():
   cursor.execute("""SELECT src_lat, src_lng, dest_lat, dest_lng, mig_id FROM migration""")
   res = cursor.fetchall()
 
-  cursor.execute("""SELECT post_id,nameofarticle,post_time, writer_username, migrated FROM post WHERE Is_Approved IS TRUE""")
+  cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
+						     writer_username,migrated FROM post WHERE Is_Approved IS TRUE ORDER BY upvotes""")
   posts = cursor.fetchall()
   posts.reverse()
 
@@ -42,8 +43,8 @@ def approve_post():
     return str(False)
   success = True
   try:
-    print(post_id)
     cursor.execute("UPDATE post SET Is_Approved=TRUE WHERE post_id=%s;",(post_id,))
+    mydb.commit()
   except:
     success = False
   return str(success)
