@@ -75,7 +75,15 @@ def post(post_id):
     return redirect(url_for('lost'))
   cursor.execute("""SELECT comment_id,name,comment,commented_time,is_user FROM comment WHERE post = %s""", (post_id,))
   comments = cursor.fetchall()
-  return render_template('postpage.html', data=post_data, comments=comments, user=user)
+
+  cursor.execute("""SELECT src_lat,src_lng,dest_lat,dest_lng FROM migration WHERE mig_id=%s""", (post_data[0][9],))
+  coord = cursor.fetchall()
+
+  c = None
+  if len(coord):
+    c = coord[0]
+
+  return render_template('postpage.html', data=post_data, comments=comments, user=user, coord=c)
 
 @app.route('/post/<post_id>/addcomment', methods = ['POST', 'GET'])
 def addcomment(post_id):
@@ -224,7 +232,7 @@ def sign_up():
   if not name:
     error = "Name too short"
 
-  if any(re.findall(r'#|<|>', username)):
+  if any(re.findall(r'#|<|>|%', username)):
     error = "Username cannot contain special characters"
 
   if error:

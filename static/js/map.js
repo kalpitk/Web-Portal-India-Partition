@@ -32,11 +32,10 @@ function addMarker(coord) {
 }
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: -34.397, lng: 150.644},
-        zoom: 8
+        center: {lat: 28.62, lng: 72.27},
+        zoom: 6
     });
     const len = coordinates.length;
-    console.log(len);
     for(var i=0;i<len;i++) {
         addMarker(coordinates[i]);
     }

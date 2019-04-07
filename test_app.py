@@ -52,6 +52,8 @@ def test_signup(client):
     signup(client, 'user1', 'abc@example.com', 'User', 'password')
     res = login(client, 'user1', 'password')
     assert res.status_code == 200
+    cursor.execute("DELETE FROM user WHERE username = 'user1'")
+    mydb.commit()
 
 def test_profile(client):
     res = client.get('/profile/collab')
@@ -96,7 +98,7 @@ def test_post_list(client):
     assert res.find('/post/1') != -1
     assert res.find('/post/3') != -1
 
-    res = client.get('/post_list?src_lat=-34.9&src_lng=150.7').data
+    res = client.get('/post_list?src_lat=28.94&src_lng=71.83').data
     assert res.find('/post/1') != -1
     assert res.find('/post/3') != -1
 

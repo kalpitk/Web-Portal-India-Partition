@@ -50,7 +50,7 @@
                     <header>
                         <a href="{{ url_for('post',post_id= post[0]) }}">{{ post[1] }}</a>
                     </header>					
-                    <p>about post</p>
+                    <p>{{ post[4][:20] }}...</p>
                 </div>
             </div>
             {% endfor %}

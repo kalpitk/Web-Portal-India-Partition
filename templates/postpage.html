@@ -24,6 +24,30 @@
 				data1.append('post_id', '{{data[0][0]}}');
 				http.send(data1);
 			})
+
+			var migration = document.getElementById('migration');
+
+			var migration1 = new XMLHttpRequest();
+			migration1.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var myArr = JSON.parse(this.responseText);
+					migration.innerText = myArr.features[0].place_name;
+				}
+			};
+			migration1.open("GET", "https://api.mapbox.com/geocoding/v5/mapbox.places/{{coord[1]}},{{coord[0]}}.json?access_token=sk.eyJ1Ijoia2FscGl0ayIsImEiOiJjanU2emc0YmUwMm1xNDNwaHhjbzJsc2g3In0.w4P1RZ_Mi8xbDL6Wbrh_2A", false);
+			migration1.send();
+
+
+			var migration2 = new XMLHttpRequest();
+			migration2.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var myArr = JSON.parse(this.responseText);
+					migration.innerHTML = "<b>" + migration.innerText + "</b>" + " to " + "<b>" + myArr.features[0].place_name + "</b>";
+				}
+			};
+
+			migration2.open("GET", "https://api.mapbox.com/geocoding/v5/mapbox.places/{{coord[3]}},{{coord[2]}}.json?access_token=sk.eyJ1Ijoia2FscGl0ayIsImEiOiJjanU2emc0YmUwMm1xNDNwaHhjbzJsc2g3In0.w4P1RZ_Mi8xbDL6Wbrh_2A", false);
+			migration2.send();
 		});
 	</script>
 
@@ -36,7 +60,7 @@
 				<a class="navbar-brand" href="#">Partition Memories</a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="{{url_for('home')}}">Home</a></li>
+				<li><a href="{{url_for('home')}}">Home</a></li>
 				<li><a href="{{ url_for('top_posts') }}">Top Posts</a></li>
 				<li><a id="latest" name="latest" href="{{url_for('post_list')}}">Latests Posts</a></li>
 				<li><a href="#">About Us</a></li>
@@ -83,7 +107,7 @@
 			{% if data[0][9] %}
 			<div id="AM">
 				<h2>About migration</h2>
-				<p>Migration </p>
+				<p id="migration"></p>
 			</div>
 			{% endif %}
 			<br>
@@ -123,7 +147,7 @@
 							</div>
 							<div class="col-lg-6" style="border-left: solid 1px;">
 								<h6>OR</h6>
-								<a href="#signup" class="btn btn-primary"><span class="glyphicon glyphicon-log-in"></span> login</a>
+								<a href="{{url_for('login_page')}}" class="btn btn-primary"><span class="glyphicon glyphicon-log-in"></span> login</a>
 							</div>
 							</div>
 						{% endif %}
