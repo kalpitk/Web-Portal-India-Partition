@@ -132,7 +132,7 @@
 				<hr style="border-color: black;margin-top: 0px;">
 				<div class="row" style="margin:0px;">
 					<div class="well well-sm col-lg-6">
-					<form method="POST" action="/post/{{data[0][0]}}/addcomment" >
+					<form method="POST" action="{{ url_for('addcomment', post_id=data[0][0]) }}" >
 						<div class="form-group">
 							<label class="has-float-label">Write a comment</label>
 							<input type="text" name="mycomment" class="form-control" placeholder="leave a comment">
@@ -163,7 +163,7 @@
 								<p><b style="color: red;font-size :15px;">{{ c[1] }}</b> on <b style="color: #555555;">{{ c[3] }}</b> says</p>
 								{% if c[1]==user and c[4] %}
 								<div  style="float: right;" data-toggle="tooltip" data-placement="top" title="Delete">
-									<a href="/post/{{ data[0][0] }}/deletecomment/{{ c[0] }}" 
+									<a href="{{ url_for('deletecomment', post_id=data[0][0], comment_id=c[0]) }}" 
 									class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
 								</div>
 								{% endif %}

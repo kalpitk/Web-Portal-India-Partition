@@ -48,7 +48,9 @@
                 </div>
                 <div class="postlink">
                     <header>
-                        <a href="{{ url_for('post',post_id= post[0]) }}">{{ post[1] }}</a>
+                        <a href="{{url_for('post', post_id = post[0]) }}" style="font-size:30px;">{{ post[1] }}</a>
+                         by <a href="{{url_for('profile', user = 'post[6]')}}"><b>{{ post[6] }}</b></a>
+                         on <b>{{ post[5] }}</b>
                     </header>					
                     <p>{{ post[4][:20] }}...</p>
                 </div>

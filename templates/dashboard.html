@@ -13,12 +13,16 @@
 			if (shown=='posted') {
 				document.getElementById('posted').style.display='';
 				document.getElementById('unapp').style.display='none';
-				document.getElementById('mods').style.display='none';
+				if ('{{ isadmin }}' != 'False'){
+					document.getElementById('mods').style.display='none';
+				}
 			} 
 			else if(shown=='unapp'){
 				document.getElementById('posted').style.display='none';
 				document.getElementById('unapp').style.display='';
-				document.getElementById('mods').style.display='none';	
+				if ('{{ isadmin }}' != 'False'){
+					document.getElementById('mods').style.display='none';
+				}
 			}
 			else
 			{
@@ -26,7 +30,6 @@
 				document.getElementById('unapp').style.display='none';
 				document.getElementById('mods').style.display='';
 			}
-			document.getElementById(shown).style.display='';
 			return false;
 		}
 		$(document).ready(function(){
@@ -52,6 +55,7 @@
 			</ul>
 			{% if user %}
 			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#"><span class="glyphicon glyphicon-bell"></span></a></li>
 				<li class="active"><a href="{{ url_for('dashboard') }}" ><span class="glyphicon glyphicon-user"></span> Dashboard</a></li>
 				<li><a href="{{ url_for('profile', user=user)}}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
 				<li><a href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
@@ -89,12 +93,22 @@
 							<p style="color: green;"> +{{ p[2] }}</p>
 							<p style="color: red">-{{ p[3] }}</p>
 						</div>
-						<!-- add unapproved tag -->
 						<div class="postlink">
-							<header>
-								<a href="{{url_for('post', post_id = p[0]) }}"><h1>{{ p[1] }}</h1>	</a>
-							</header>
-							<p>{{ p[4][:20] }}...</p>
+							<div class="row">
+								<div class="col-lg-9 col-md-9">
+									<a href="{{url_for('post', post_id = p[0]) }}" style="font-size:30px;">{{ p[1] }}</a>
+									 by <a href="{{url_for('profile', user = 'p[6]')}}"><b>{{ p[6] }}</b></a>
+									 on <b>{{ p[5] }}</b>
+									<p>{{ p[4][:20] }}...</p>
+								</div>
+								<div class="col-lg-2 col-md-2">
+									{% if p[8] %}
+									<div class="alert alert-success" style="text-align:center;">Approved</div>
+									{% else %}
+									<div class="alert alert-danger" style="text-align:center;">NOT approved</div>
+									{% endif %}
+								</div>
+							</div>
 						</div>
 					</div>
 				{% endfor %}
@@ -117,7 +131,9 @@
 					</div>
 					<div class="postlink">
 						<header>
-							<a href="{{ url_for('post',post_id= u[0]) }}">{{ u[1] }}</a>
+							<a href="{{url_for('post', post_id = u[0]) }}" style="font-size:30px;">{{ u[1] }}</a>
+							 by <a href="{{url_for('profile', user = 'u[6]')}}"><b>{{ u[6] }}</b></a>
+							 on <b>{{ u[5] }}</b>
 						</header>					
 						<p>{{ u[4][:20] }}...</p>
 					</div>

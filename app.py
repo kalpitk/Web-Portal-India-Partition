@@ -175,7 +175,7 @@ def dashboard():
     return redirect(url_for('lost'))
   user = session.get('username')
   cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
-		                writer_username,migrated FROM post WHERE writer_username = %s""", (user,))
+		                writer_username,migrated,Is_Approved FROM post WHERE writer_username = %s""", (user,))
   posted_list = cursor.fetchall()
   cursor.execute("""SELECT Is_Moderator,Is_Admin FROM user WHERE username = %s""", (user,))
   me = cursor.fetchall()
