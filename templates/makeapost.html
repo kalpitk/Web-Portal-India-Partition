@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+
+
+	<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+	</script>
+	<script> const coordinates = {{res|tojson|safe}} </script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+	body, html {
+	  height: 100%;
+	  margin: 0;
+	}
+
+	body {
+	  /* The image used */
+	  background-image: url("background.jpg");
+
+	  /* Full height */
+	  height: 100%; 
+
+	  /* Center and scale the image */
+	  background-position: center;
+	  background-repeat: no-repeat;
+	  background-size: cover;
+	  background-attachment: fixed;
+	}
+	</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse navbar-static-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Partition Memories</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a href="{{url_for('home')}}">Home</a></li>
+				<li><a href="{{ url_for('top_posts') }}">Top Posts</a></li>
+				<li><a id="latest" name="latest" href="{{url_for('post_list')}}">Latests Posts</a></li>
+				<li><a href="#">About Us</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+				</li>
+				<li><a href="{{url_for('login_page')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+			</ul>
+		</div>
+	</nav>
+	<link rel="stylesheet" href="makeapost.css">
+	<nav>
+		
+		<form class="space">
+			<p style="color:white"><b>Introduction:</b></p>
+			<textarea style="background-color: #888; border-radius: 10px" rows="6" cols="100" name="usrtxt" wrap="hard" >
+			</textarea>
+			<p style="color:white"><b>Language:</b></p>
+			<textarea style="background-color: #888; border-radius: 10px" rows="8" cols="100" name="usrtxt" wrap="hard">
+			</textarea>
+			<p style="color:white"><b>Culture:</b></p>
+			<textarea style="background-color: #888; border-radius: 10px" rows="8" cols="100" name="usrtxt" wrap="hard">
+			</textarea>
+			<p style="color:white"><b>Whatever is left:</b></p>
+			<textarea style="background-color: #888; border-radius: 10px" rows="8" cols="100" name="usrtxt" wrap="hard">
+			</textarea>
+			<p style="color:white"><b>Upload Image/Videos:</b></p>
+			<input class="blocks" type="file" name="pic" accept="image/*,video/*" multiple="multiple">
+			<br><br><br>
+  			<input class="submitit" type="submit" value="Submit">
+
+</form>
+
+	</nav>
+
+</body>
+
+</html>
