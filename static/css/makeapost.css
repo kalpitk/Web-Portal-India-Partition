@@ -1,0 +1,15 @@
+form input.blocks{
+  background-color: #999;
+  border: 10px;
+  border-radius: 6px;
+}
+form{
+  padding-left: 50px;
+}
+form input.submitit{
+  background-color: orange;
+  border: 40px 50px;
+  font-size: 36px;
+  border-radius: 10px;
+
+}
