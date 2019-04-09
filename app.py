@@ -276,6 +276,24 @@ def logout():
   session.pop('admin', None)
   return redirect(url_for('home'))
 
+@app.route("/make_post_page", methods = ['POST', 'GET'])
+def make_post_page():
+  return render_template('makeapost.html')
+
+@app.route("/makepost", methods = ['POST', 'GET'])
+def makepost():
+  title = request.form.get('title')
+  content = request.form.get('content')
+  ytb = request.form.get('ytb')
+  author = session.get('username')
+
+  cursor.execute("""INSERT INTO post (nameofarticle, content, video_link, post_time, writer_username) VALUES (%s,%s,%s,NOW(),%s)""", (title, content, ytb, author,))
+  mydb.commit()
+
+  return redirect(url_for('dashboard'))
+
 if __name__ == "__main__":
   app.config['SESSION_TYPE'] = 'filesystem'
-  app.run(debug=True)
+  app.run(
+    # host='0.0.0.0', 
+    debug=True)

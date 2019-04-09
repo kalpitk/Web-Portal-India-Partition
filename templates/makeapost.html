@@ -12,7 +12,6 @@
 	<script src="{{ url_for('static', filename='js/map.js') }}"></script>
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
 	</script>
-	<script> const coordinates = {{res|tojson|safe}} </script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
 	body, html {
@@ -56,11 +55,13 @@
 		</div>
 	</nav>
 	<link rel="stylesheet" href="makeapost.css">
-	<nav>
+	
 		
-		<form class="space">
-			<p style="color:white"><b>Introduction:</b></p>
-			<textarea style="background-color: #888; border-radius: 10px" rows="6" cols="100" name="usrtxt" wrap="hard" >
+		<form class="space" action="/makepost" method="POST">
+			<p style="color:white"><b>Title</b></p>
+			<input id="title" name="title"></input>
+			<p style="color:white"><b>Content</b></p>
+			<!-- <textarea style="background-color: #888; border-radius: 10px" rows="6" cols="100" name="usrtxt" wrap="hard" >
 			</textarea>
 			<p style="color:white"><b>Language:</b></p>
 			<textarea style="background-color: #888; border-radius: 10px" rows="8" cols="100" name="usrtxt" wrap="hard">
@@ -70,15 +71,15 @@
 			</textarea>
 			<p style="color:white"><b>Whatever is left:</b></p>
 			<textarea style="background-color: #888; border-radius: 10px" rows="8" cols="100" name="usrtxt" wrap="hard">
-			</textarea>
+			</textarea> -->
+			<textarea id="content" name="content" rows="8" cols="100"></textarea>
 			<p style="color:white"><b>youtube link:</b></p>
-			<textarea style="background-color: #888; border-radius: 10px" rows="8" cols="100" name="usrtxt" wrap="hard">
-			</textarea>
-			
+			<input id="ytb" name="ytb"></input>
+			<br>
+			<button type="submit" class="submitit">Submit</button>
 
-</form>
+		</form>
 
-	</nav>
 
 </body>
 
