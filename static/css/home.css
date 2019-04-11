@@ -1,8 +1,5 @@
 
 
-body {
-	background-color:  rgb(236, 177, 177)
-}
 .footer 
 {
 	text-align: center;
@@ -12,7 +9,7 @@ body {
 .main {
 	margin-top: 10px;
 	margin-left: 10px;
-	margin-right: 300px;
+	margin-right: 10px;
 }
 .signin2 {
 	border :solid  green 6px;
@@ -20,5 +17,5 @@ body {
 }
 .map {
 	border :solid black;
-	height: 600px;
+	height: 1500px;
 }
