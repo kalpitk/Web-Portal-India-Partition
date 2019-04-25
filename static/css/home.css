@@ -19,3 +19,7 @@
 	border :solid black;
 	height: 1500px;
 }
+
+.navbar_item {
+	color: black;text-shadow: 1px 1px 2px white; font-size: 300px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}

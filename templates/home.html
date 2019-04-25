@@ -23,22 +23,22 @@
 	<nav class="navbar navbar-inverse" id="fix" style="background-color:rgb(201,166,125); height: 52px;">
 		<div class="container-fluid">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="{{url_for('home')}}" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Home</a></li>
-				<li><a href="{{ url_for('top_posts') }}" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Top Posts</a></li>
-				<li><a id="latest" name="latest" href="{{url_for('post_list')}}" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Latests Posts</a></li>
-				<li><a href="#" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">About Us</a></li>
+				<li class="active"><a href="{{url_for('home')}}" style="color: white;text-shadow: 1px 1px 2px black; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Home</a></li>
+				<li><a href="{{ url_for('top_posts') }}" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Top Posts</a></li>
+				<li><a id="latest" name="latest" href="{{url_for('post_list')}}" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Latests Posts</a></li>
+				<li><a href="#" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">About Us</a></li>
 			</ul>
 			{% if session.get('username')%}
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{ url_for('dashboard') }}"><span class="glyphicon glyphicon-user" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"></span> Dashboard</a></li>
-				<li><a href="{{ url_for('profile', user=session.get('username')) }}" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-				<li><a href="{{url_for('logout')}}" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+				<li><a href="{{ url_for('dashboard') }}"><span class="glyphicon glyphicon-user" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"></span> Dashboard</a></li>
+				<li><a href="{{ url_for('profile', user=session.get('username')) }}" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+				<li><a href="{{url_for('logout')}}" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 			</ul>
 			{% else %}
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{url_for('sign_up_page')}}" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; height: 52px; padding: 8px;"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+				<li><a href="{{url_for('sign_up_page')}}" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; height: 52px; padding: 8px;"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
 				</li>
-				<li><a href="{{url_for('login_page')}}" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; height: 52px; padding: 8px;"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				<li><a href="{{url_for('login_page')}}" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; height: 52px; padding: 8px;"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 			</ul>
 			{% endif %}
 		</div>
@@ -68,7 +68,7 @@
 				<div class=" col-lg-8 col-md-8" style="border-right:solid #1199ff 1px;">
 					<div style="min-height:500px;" id="map">
 					</div>
-					<h1>Recent uploads</h1>
+					<h1 style="color: black; font-weight:1000; text-shadow: 1px 1px 2px white">Recent uploads</h1>
 					<div class="row" style="margin:2px;">
 							{% for post in posts %}
 							<div class="post">
