@@ -20,7 +20,7 @@
 		<!--div>Partition Memories</div-->
 		<div class="pull-right"><img src="/static/img/dh-logo.png" height="150" style="padding-right: 20px; filter: drop-shadow(2px 2px 2px black) drop-shadow(-1px -1px 0 black);"/></div>
 	</div>
-	<nav class="navbar navbar-inverse" id="fix" style="background-color:rgb(201,166,125); ">
+	<nav class="navbar navbar-inverse" id="fix" style="background-color:rgb(201,166,125); height: 52px;">
 		<div class="container-fluid">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="{{url_for('home')}}" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Home</a></li>
@@ -36,9 +36,9 @@
 			</ul>
 			{% else %}
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{url_for('sign_up_page')}}" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+				<li><a href="{{url_for('sign_up_page')}}" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; height: 52px; padding: 8px;"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
 				</li>
-				<li><a href="{{url_for('login_page')}}" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				<li><a href="{{url_for('login_page')}}" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; height: 52px; padding: 8px;"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 			</ul>
 			{% endif %}
 		</div>
