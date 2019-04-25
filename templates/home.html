@@ -14,11 +14,13 @@
 	<script> const coordinates = {{ res|tojson|safe }} </script>
 </head>
 
-<body style="background-color:burlywood;padding-top: 70px;">
-	<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:rgb(201,166,125); ">
-		<div style="height:200px; background-image: url('/static/img/b1.png'); background-position: center;">
-
-		</div>
+<body style="background-color:burlywood;">
+	<div class="row" style="height:200px; background-image: url('/static/img/b1.png'); background-position: center;">
+		<div class="col-lg-2 col-md-2"><img src="/static/img/iiti-logo.png" height="200"/></div>
+		<div class="col-lg-6 col-md-6"></div>
+		<div class="col-lg-4 col-md-4"><img src="/static/img/dh-logo.png" height="200"/></div>
+	</div>
+	<nav class="navbar navbar-inverse" id="fix" style="background-color:rgb(201,166,125); ">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#" style="color: white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Partition Memories</a>
@@ -44,7 +46,26 @@
 			{% endif %}
 		</div>
 	</nav>
-	<div class="container" style="background-image: url('static/img/msq.jpg'); margin: 200px 100px 100px 100px; width:88%;">
+	<script>
+		window.onscroll = function() {myFunction()};
+		
+		var header = document.getElementById("fix");
+		var sticky = header.offsetTop;
+		
+		function myFunction() {
+			var h=$('#fix').outerHeight(true) ;
+			h=h.toString()+'px';
+			console.log(h);
+			if (window.pageYOffset > sticky) {
+			header.classList.add("navbar-fixed-top");
+			document.getElementById('fix1').style.marginTop=h;
+			} else {
+			header.classList.remove("navbar-fixed-top");
+			document.getElementById('fix1').style.marginTop='0px';
+			}
+		}
+	</script>
+	<div class="container" id="fix1" style="background-image: url('static/img/msq.jpg');background-size: cover;">
 		<div style="min-height: 600px">
 			<div class="row" style="margin: 20px;">
 				<div class=" col-lg-8 col-md-8" style="border-right:solid #1199ff 1px;">
@@ -72,7 +93,7 @@
 				</div>
 				
 				<div class=" col-lg-4 col-md-4">
-					<div class="well signin2 " style="position: fixed;min-width: 20%;max-width: 30%;padding-top: 0px;">
+					<div class="well signin2 " style="padding-top: 0px;background-color:rgba(245,245,245,0.7)">
 					<h1 >News</h1>
 					<ul>
 					<li>adsadds</li>
@@ -80,8 +101,58 @@
 					<li>adsadds</li>
 					<li>adsadds</li>
 					<li>adsadds</li>
+					</ul>
 					</div>
-				</ul>
+					<div class="well signin2 " style="overflow-y:scroll;padding-top: 0px;background-color:rgba(245,245,245,0.7);max-height: 600px;">
+					<h1 >News</h1>
+					<ul>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					<li>adsadds</li>
+					</ul>
+					</div>
 				</div>
 			</div>
 
