@@ -8,6 +8,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}"> -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/post_list.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="{{ url_for('static', filename='js/map.js') }}"></script>
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
 	</script>
@@ -68,13 +69,13 @@
 				<div class=" col-lg-8 col-md-8" style="border-right:solid #1199ff 1px;">
 					<div style="min-height:500px;" id="map">
 					</div>
-					<h1 style="color: black; font-weight:1000; text-shadow: 1px 1px 2px white">Recent uploads</h1>
+					<h1 style="color: black; font-weight:1000; text-shadow: 1px 1px 2px white; padding-top: 20px;">Recent Interviews</h1>
 					<div class="row" style="margin:2px;">
 							{% for post in posts %}
 							<div class="post">
 								<div class="votes">
-									<p style="color: green;"> +{{ post[2] }}</p>
-									<p style="color: red">-{{ post[3] }}</p>
+									<p style="color: green; padding-top: 7px;"><span class="glyphicon glyphicon glyphicon-chevron-up"></span>{{ post[2] }}</p>
+									<p style="color: red"><span class="glyphicon glyphicon glyphicon-chevron-down"></span>{{ post[3] }}</p>
 								</div>
 								<div class="postlink">
 									<header>
@@ -89,78 +90,38 @@
 					</div>
 				</div>
 				
-				<div class=" col-lg-4 col-md-4">
+				<div class="col-lg-4 col-md-4">
+					<form style="height: 50px;" action="/search_post">
+						<input type="text" id="query" name="query" style="width: 100%; padding-top: 0px;" placeholder="Search Post ...">
+						<button type="submit" style="position:absolute; right:14px; top:0; float: right;"><i class="fa fa-search"></i></button>
+					</form>
 					<div class="well signin2 " style="padding-top: 0px;background-color:rgba(245,245,245,0.7)">
-					<h1 >News</h1>
-					<ul>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					</ul>
+						<h1>News</h1>
+						<ul>
+							<li><a href="https://www.theguardian.com/cities/2019/apr/12/life-swap-the-families-forced-to-trade-places-after-india-partition-india-pakistan-kolkata-dhaka">Life swap: the families forced to trade places after Indian Partition </a></li>
+							<li><a href="https://www.hindustantimes.com/world-news/ancient-indian-writing-makes-a-mark-in-key-uk-review/story-CmGZZZMahgNwMXUiTUwJMI.html">Ancient Indian writing makes a mark in key UK review</a></li>
+							<li><a href="https://www.nytimes.com/2019/04/08/books/review/qurratulain-hyder-river-of-fire.html">An Urdu Epic Puts India’s Partition Into Historical Perspective</a></li>
+						</ul>
 					</div>
 					<div class="well signin2 " style="overflow-y:scroll;padding-top: 0px;background-color:rgba(245,245,245,0.7);max-height: 600px;">
-					<h1 >News</h1>
-					<ul>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					<li>adsadds</li>
-					</ul>
+						<h1>Blog Posts</h1>
+						<ul>
+							{% for post in posts1 %}
+							<li><a href="/post/{{post[0]}}">{{post[1]}}</a></li>
+							{% endfor %}
+						</ul>
 					</div>
 				</div>
 			</div>
 
 		</div>
-		<div class="row" style="background-color: #76ECFE;text-align: center;">
+		<div class="row" style="background-color: rgba(245,245,245,0.7);text-align: center;">
 			<br>
 			<a href="#">
 				<h3>About
 				</a> |
 				<a href="#">Help</a> |
-				<a href="#">Licence</a> |
+				<a href="#">License</a> |
 				<a href="#">Contact Us</h3></a>
 			</br>
 		</div>

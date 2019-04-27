@@ -22,11 +22,17 @@ def home():
   res = cursor.fetchall()
 
   cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
-						     writer_username,migrated FROM post WHERE Is_Approved IS TRUE ORDER BY upvotes""")
+						     writer_username,migrated FROM post WHERE is_approved IS TRUE AND is_blog IS FALSE ORDER BY upvotes""")
   posts = cursor.fetchall()
-  posts.reverse()
 
-  return render_template('home.html', res = res, posts = posts)
+  cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
+						     writer_username,migrated FROM post WHERE is_approved IS TRUE AND is_blog IS TRUE ORDER BY upvotes""")
+  posts1 = cursor.fetchall()
+
+  posts.reverse()
+  posts1.reverse()
+
+  return render_template('home.html', res = res, posts = posts, posts1 = posts1)
 
 @app.route("/sign_up_page", methods = ['POST', 'GET'])
 def sign_up_page():
@@ -43,7 +49,23 @@ def approve_post():
     return str(False)
   success = True
   try:
-    cursor.execute("UPDATE post SET Is_Approved=TRUE WHERE post_id=%s;",(post_id,))
+    cursor.execute("UPDATE post SET is_approved is TRUE WHERE post_id=%s;",(post_id,))
+    mydb.commit()
+  except:
+    success = False
+  return str(success)
+
+@app.route("/vote_post", methods = ['POST', 'GET'])
+def vote_post():
+  vote = request.form.get('vote')
+  post_id = request.form.get('post_id')
+  success = True
+
+  try:
+    if vote == '1':
+      cursor.execute("UPDATE post SET upvotes = upvotes + 1 WHERE post_id=%s;",(post_id,))
+    else:
+      cursor.execute("UPDATE post SET downvotes = downvotes + 1 WHERE post_id=%s;",(post_id,))
     mydb.commit()
   except:
     success = False
@@ -51,12 +73,12 @@ def approve_post():
 
 @app.route('/profile/<user>')
 def profile(user=None):
-  cursor.execute("""SELECT username,name,email_id,Is_moderator,Is_admin,contributions FROM user WHERE username = %s""", (user,))
+  cursor.execute("""SELECT username,name,email_id,is_moderator,is_admin,contributions FROM user WHERE username = %s""", (user,))
   res = cursor.fetchall()
   if len(res) == 0:
     return redirect(url_for('lost'))
   
-  cursor.execute("""SELECT post_id,nameofarticle FROM post WHERE writer_username = %s AND Is_Approved IS TRUE""", (user,))
+  cursor.execute("""SELECT post_id,nameofarticle FROM post WHERE writer_username = %s AND is_approved IS TRUE""", (user,))
   post = cursor.fetchall()
   return render_template('user.html',user=res,post=post)
 
@@ -68,7 +90,7 @@ def post(post_id):
 		user = session.get('username')
 
   cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,video_link,post_time, 
-                  writer_username,approver_username,migrated,Is_Approved FROM post WHERE post_id = %s""", (post_id,))
+                  writer_username,approver_username,migrated,is_approved FROM post WHERE post_id = %s""", (post_id,))
   post_data = cursor.fetchall()
 
   if not post_data[0][9] and not session.get('moderator') and user != post_data[0][7]:
@@ -118,7 +140,7 @@ def deletecomment(post_id,comment_id):
 @app.route('/top_posts')
 def top_posts():
   cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
-						     writer_username,migrated FROM post WHERE Is_Approved IS TRUE ORDER BY upvotes""")
+						     writer_username,migrated FROM post WHERE is_approved IS TRUE AND is_blog IS FALSE ORDER BY upvotes""")
   res = cursor.fetchall()
   res.reverse()
   return render_template('post_list.html', posts=res)
@@ -126,12 +148,12 @@ def top_posts():
 @app.route('/search_post')
 def search_post():
   query = request.args.get('query')
-  if 'query' not in request.args:
+  if 'query' not in request.args or '%' in query:
     query = ''
   query = '%' + query + '%'
-  print query
+
   cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
-						     writer_username,migrated FROM post WHERE Is_Approved IS TRUE AND nameofarticle 
+						     writer_username,migrated FROM post WHERE is_approved IS TRUE AND nameofarticle 
                  LIKE %s ORDER BY upvotes""", (query,))
   res = cursor.fetchall()
   res.reverse()
@@ -146,21 +168,21 @@ def post_list():
 
   if src_lat == None and src_lng == None and dest_lat == None and dest_lng == None:
     cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
-						     writer_username,migrated FROM post WHERE Is_Approved IS TRUE""")
+						     writer_username,migrated FROM post WHERE is_approved IS TRUE AND is_blog IS FALSE""")
   elif src_lat != None and src_lng != None and dest_lat == None and dest_lng == None:
     cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
 						        writer_username,migrated FROM post INNER JOIN migration 
-                    ON migrated = mig_id WHERE Is_Approved IS TRUE AND ((src_lat LIKE %s And src_lng LIKE %s) OR 
+                    ON migrated = mig_id WHERE is_approved IS TRUE AND is_blog IS FALSE AND ((src_lat LIKE %s And src_lng LIKE %s) OR 
                     (dest_lat LIKE %s And dest_lng LIKE %s))""", (src_lat, src_lng,src_lat, src_lng,))
   elif src_lat == None and src_lng == None and dest_lat != None and dest_lng != None:
     cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
 						       writer_username,migrated FROM post INNER JOIN migration 
-                   ON migrated = mig_id WHERE Is_Approved IS TRUE AND ((src_lat LIKE %s And src_lng LIKE %s) OR 
+                   ON migrated = mig_id WHERE is_approved IS TRUE AND is_blog IS FALSE AND ((src_lat LIKE %s And src_lng LIKE %s) OR 
                    (dest_lat LIKE %s And dest_lng LIKE %s))""", (dest_lat, dest_lng,dest_lat, dest_lng,))
   elif src_lat != None and src_lng != None and dest_lat != None and dest_lng != None:
     cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
 						       writer_username,migrated FROM post INNER JOIN migration 
-                   ON migrated = mig_id WHERE Is_Approved IS TRUE AND src_lat LIKE %s 
+                   ON migrated = mig_id WHERE is_approved IS TRUE AND is_blog IS FALSE AND src_lat LIKE %s 
                    And src_lng LIKE %s AND dest_lat LIKE %s And dest_lng LIKE %s""", (src_lat,src_lng,dest_lat, dest_lng,))
   else:
     return redirect(url_for('lost'))
@@ -175,9 +197,9 @@ def dashboard():
     return redirect(url_for('lost'))
   user = session.get('username')
   cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
-		                writer_username,migrated,Is_Approved FROM post WHERE writer_username = %s""", (user,))
+		                writer_username,migrated,is_approved FROM post WHERE writer_username = %s""", (user,))
   posted_list = cursor.fetchall()
-  cursor.execute("""SELECT Is_Moderator,Is_Admin FROM user WHERE username = %s""", (user,))
+  cursor.execute("""SELECT is_moderator,is_admin FROM user WHERE username = %s""", (user,))
   me = cursor.fetchall()
 
   if not me[0][0] and not me[0][1]:
@@ -185,22 +207,22 @@ def dashboard():
   if me[0][0] :
 		cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
 						writer_username,migrated FROM post 
-						WHERE Is_Approved= FALSE""")
+						WHERE is_approved IS FALSE""")
 		unapproved_list= cursor.fetchall()
 		if not me[0][1]:
 			return render_template('dashboard.html', data=posted_list, user=user,
 							unapproved_list=unapproved_list, ismod=True, isadmin=False)
 		else:
 			cursor.execute("""SELECT username,name,email_id,contributions FROM user
-					 WHERE Is_Moderator = TRUE AND Is_Admin= FALSE""")
+					 WHERE is_moderator IS TRUE AND is_admin IS FALSE""")
 			moderators_list=cursor.fetchall()
 			return render_template('dashboard.html', data=posted_list, user=user,
 					unapproved_list=unapproved_list, mods=moderators_list, ismod=True, isadmin=True)
 
-@app.route('/dashboard/delmod/<username>')
+@app.route('/dashboard/delmod/<username>', methods=['POST'])
 def removeMod(username):
 	if session.get('admin'):
-		cursor.execute("""UPDATE user SET Is_Moderator=FALSE WHERE username=%s""", (username,))
+		cursor.execute("""UPDATE user SET is_moderator IS FALSE WHERE username=%s""", (username,))
 		mydb.commit()
 	return redirect(url_for('dashboard'))
 
@@ -248,7 +270,7 @@ def sign_up():
 def login():
   username = request.form['username']
   password = hashlib.md5(request.form['password'].encode()).hexdigest()
-  cursor.execute("""SELECT username, password, email_id, Is_Moderator, Is_Admin, contributions FROM user WHERE username = %s""", (username,))
+  cursor.execute("""SELECT username, password, email_id, is_moderator, is_admin, contributions FROM user WHERE username = %s""", (username,))
   res = cursor.fetchall()
 
   if cursor.rowcount == 0 :
@@ -295,5 +317,5 @@ def makepost():
 if __name__ == "__main__":
   app.config['SESSION_TYPE'] = 'filesystem'
   app.run(
-    host='0.0.0.0', 
+    # host='0.0.0.0', 
     debug=True)
