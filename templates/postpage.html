@@ -1,216 +1,167 @@
-<!DOCTYPE html>
-<html>
+{% extends "template.html" %}
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<title>{{ data[0][1] }}</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-	<script>
-		$(document).ready(function(){
-			$('[data-toggle="tooltip"]').tooltip();   
-			$("#approve_post").click(function () {
-				var http = new XMLHttpRequest();
-				var url = "{{url_for('approve_post')}}";
-				http.open("POST", url, true);
-				http.onreadystatechange = function() {
-					if(http.readyState == 4 && http.status == 200) {
-						$("#approve_post").hide();
-					}
+{% block extra_head %}
+<title>{{ data[0][1] }}</title>
+<script>
+	$(document).ready(function(){
+		$('[data-toggle="tooltip"]').tooltip();   
+		$("#approve_post").click(function () {
+			var http = new XMLHttpRequest();
+			var url = "{{url_for('approve_post')}}";
+			http.open("POST", url, true);
+			http.onreadystatechange = function() {
+				if(http.readyState == 4 && http.status == 200) {
+					$("#approve_post").hide();
 				}
-				var data1 = new FormData();
-				data1.append('post_id', '{{data[0][0]}}');
-				http.send(data1);
-			})
-
-			function vote(vote) {
-				var http = new XMLHttpRequest();
-				var url = "{{url_for('vote_post')}}";
-				http.open("POST", url, true);
-				var data1 = new FormData();
-				data1.append('post_id', '{{data[0][0]}}');
-				data1.append('vote', vote);
-				http.send(data1);
 			}
+			var data1 = new FormData();
+			data1.append('post_id', '{{data[0][0]}}');
+			http.send(data1);
+		})
 
-			$("#upvote").click(()=>{vote(1);});
-			$("#downvote").click(()=>{vote(-1);});
+		function vote(vote) {
+			var http = new XMLHttpRequest();
+			var url = "{{url_for('vote_post')}}";
+			http.open("POST", url, true);
+			var data1 = new FormData();
+			data1.append('post_id', '{{data[0][0]}}');
+			data1.append('vote', vote);
+			http.send(data1);
+		}
 
-			var migration = document.getElementById('migration');
+		$("#upvote").click(()=>{vote(1);});
+		$("#downvote").click(()=>{vote(-1);});
 
-			var migration1 = new XMLHttpRequest();
-			migration1.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					var myArr = JSON.parse(this.responseText);
-					migration.innerText = myArr.features[0].place_name;
-				}
-			};
-			migration1.open("GET", "https://api.mapbox.com/geocoding/v5/mapbox.places/{{coord[1]}},{{coord[0]}}.json?access_token=sk.eyJ1Ijoia2FscGl0ayIsImEiOiJjanU2emc0YmUwMm1xNDNwaHhjbzJsc2g3In0.w4P1RZ_Mi8xbDL6Wbrh_2A", false);
-			migration1.send();
+		var migration = document.getElementById('migration');
+
+		var migration1 = new XMLHttpRequest();
+		migration1.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var myArr = JSON.parse(this.responseText);
+				migration.innerText = myArr.features[0].place_name;
+			}
+		};
+		migration1.open("GET", "https://api.mapbox.com/geocoding/v5/mapbox.places/{{coord[1]}},{{coord[0]}}.json?access_token=sk.eyJ1Ijoia2FscGl0ayIsImEiOiJjanU2emc0YmUwMm1xNDNwaHhjbzJsc2g3In0.w4P1RZ_Mi8xbDL6Wbrh_2A", false);
+		migration1.send();
 
 
-			var migration2 = new XMLHttpRequest();
-			migration2.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					var myArr = JSON.parse(this.responseText);
-					migration.innerHTML = "<b>" + migration.innerText + "</b>" + " to " + "<b>" + myArr.features[0].place_name + "</b>";
-				}
-			};
+		var migration2 = new XMLHttpRequest();
+		migration2.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var myArr = JSON.parse(this.responseText);
+				migration.innerHTML = "<b>" + migration.innerText + "</b>" + " to " + "<b>" + myArr.features[0].place_name + "</b>";
+			}
+		};
 
-			migration2.open("GET", "https://api.mapbox.com/geocoding/v5/mapbox.places/{{coord[3]}},{{coord[2]}}.json?access_token=sk.eyJ1Ijoia2FscGl0ayIsImEiOiJjanU2emc0YmUwMm1xNDNwaHhjbzJsc2g3In0.w4P1RZ_Mi8xbDL6Wbrh_2A", false);
-			migration2.send();
-		});
-	</script>
+		migration2.open("GET", "https://api.mapbox.com/geocoding/v5/mapbox.places/{{coord[3]}},{{coord[2]}}.json?access_token=sk.eyJ1Ijoia2FscGl0ayIsImEiOiJjanU2emc0YmUwMm1xNDNwaHhjbzJsc2g3In0.w4P1RZ_Mi8xbDL6Wbrh_2A", false);
+		migration2.send();
+	});
+</script>
+{% endblock extra_head %}
 
-</head>
-
-<body style="background-color: #1199ff;padding-top: 70px;">
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Partition Memories</a>
-			</div>
-			<ul class="nav navbar-nav">
-				<li><a href="{{url_for('home')}}">Home</a></li>
-				<li><a href="{{ url_for('top_posts') }}">Top Posts</a></li>
-				<li><a id="latest" name="latest" href="{{url_for('post_list')}}">Latests Posts</a></li>
-				<li><a href="#">About Us</a></li>
-			</ul>
-			{% if user %}
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{ url_for('dashboard') }}"><span class="glyphicon glyphicon-user"></span> Dashboard</a></li>
-				<li><a href="{{ url_for('profile', user=user) }}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-				<li><a href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-			</ul>
-			{% else %}
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
-				</li>
-				<li><a href="{{url_for('login_page')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-			</ul>
-			{% endif %}
-		</div>
-	</nav>
-	<div class="container"  style="background-color: white;">
-		<div>
-			<br></br>
-			<h1> {{ data[0][1] }}
-			{% if session.get('moderator') and not data[0][10] %}
-			<button id="approve_post" name="approve_post" class="btn btn-primary">Approve</button>
-			{% endif %}</h1>
-			
-			<blockquote>
-			<div class="row" >
-				<div class="col-lg-4 col-md-4 col-sm-8 well well-sm">
-					<h3 >Skip to</h3>
-					<div class="column" style="margin-left: 10px;">
-					{% if data[0][9] %}
-						<a href="#AM"> About migration </a><br>
-					{% endif %}
-					{% if data[0][5] %}
-						<a href="#video"> Videos </a>
-					{% endif %}
-					</div>
-				</div>
-			</div>
-
-			<div class="row" style="margin-left: 5px; padding: 2px">
-				<p>{{ data[0][4] }}</p>
-			</div>
+{% block main_content %}
+	<br></br>
+	<h1> {{ data[0][1] }}
+	{% if session.get('moderator') and not data[0][10] %}
+	<button id="approve_post" name="approve_post" class="btn btn-primary">Approve</button>
+	{% endif %}</h1>
+	
+	<blockquote>
+	<div class="row" >
+		<div class="col-lg-4 col-md-4 col-sm-8 well well-sm">
+			<h3 >Skip to</h3>
+			<div class="column" style="margin-left: 10px;">
 			{% if data[0][9] %}
-			<div id="AM">
-				<h2>About migration</h2>
-				<p id="migration"></p>
-			</div>
+				<a href="#AM"> About migration </a><br>
 			{% endif %}
-			<br>
-			<footer>
-			<div>
-				<p>posted on:  {{ data[0][6] }} </p>
-				<p>by <a href="{{url_for('profile', user = data[0][7])}}"><b>{{ data[0][7] }}</b></a> </p>
-			</div>
-			</footer>
-			</blockquote>
-
 			{% if data[0][5] %}
-			<div style="margin-left:20px;" id="video">
-				<h2>Videos</h2>
-				<iframe width="560" height="315" src="{{ data[0][5] }}" frameborder="0"
-					allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-					allowfullscreen></iframe>
-			</div>
+				<a href="#video"> Videos </a>
 			{% endif %}
-
-			<div style="margin-left: 20px; padding-top: 50px;">
-				<button type="button" id="upvote" name="upvote" class="btn btn-success btn-circle"><i class="fa fa-chevron-up"></i> Upvote</button>
-				<button type="button" id="downvote" name="downvote" class="btn btn-danger btn-circle"><i class="fa fa-chevron-down"></i> Downvote</button>
 			</div>
-
-			<!-- comment section -->
-			<div class="row" style="margin:20px;">
-				<h3>Comments</h3>
-				<hr style="border-color: black;margin-top: 0px;">
-				<div class="row" style="margin:0px;">
-					<div class="well well-sm col-lg-6">
-					<form method="POST" action="{{ url_for('addcomment', post_id=data[0][0]) }}" >
-						<div class="form-group">
-							<label class="has-float-label">Write a comment</label>
-							<input type="text" name="mycomment" class="form-control" placeholder="leave a comment">
-						</div>
-						{% if user %}
-							<div class="row"><div class="col-lg-6"><p>Posting as <b style="color: green;">{{ user }}</b></p></div></div>
-						{% else %}
-							<div class="row">
-							<div class="form-group col-lg-6">
-								<label class="has-float-label">Name</label>
-								<input type = "text" name="myname" class="form-control" placeholder = "Name(required)">
-							</div>
-							<div class="col-lg-6" style="border-left: solid 1px;">
-								<h6>OR</h6>
-								<a href="{{url_for('login_page')}}" class="btn btn-primary"><span class="glyphicon glyphicon-log-in"></span> login</a>
-							</div>
-							</div>
-						{% endif %}
-						<button type="submit" class="btn btn-primary">submit</button>
-					</form>
-					</div>
-				</div>
-
-				<div class="row panel-group" style="margin:0px;">
-					{% for c in comments %}
-						<div class="panel panel-info" style="margin-bottom: -5px;">
-							<div class="panel-heading" style="padding:0px;">
-								<p><b style="color: red;font-size :15px;">{{ c[1] }}</b> on <b style="color: #555555;">{{ c[3] }}</b> says</p>
-								{% if c[1]==user and c[4] %}
-								<div  style="float: right;" data-toggle="tooltip" data-placement="top" title="Delete">
-									<a href="{{ url_for('deletecomment', post_id=data[0][0], comment_id=c[0]) }}" 
-									class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
-								</div>
-								{% endif %}
-							</div>
-							<div class="panel-body" style="padding:1px;">
-								<p> {{ c[2] }} </p>
-							</div>
-						</div>
-						<br>
-					{% endfor %}
-				</div>
-			</div>
-			<!-- ends here -->
-		</div>
-
-		<div class="row" style="background-color: #76ECFE;text-align: center;">
-			<br>
-			<a href="#"><h3>About</a> |
-			<a href="#">Help</a> |
-			<a href="#">License</a> |
-			<a href="#">Contact Us</h3></a>
-			</br>
 		</div>
 	</div>
-</body>
 
-</html>
+	<div class="row" style="margin-left: 5px; padding: 2px">
+		<p>{{ data[0][4] }}</p>
+	</div>
+	{% if data[0][9] %}
+	<div id="AM">
+		<h2>About migration</h2>
+		<p id="migration"></p>
+	</div>
+	{% endif %}
+	<br>
+	<footer>
+	<div>
+		<p>posted on:  {{ data[0][6] }} </p>
+		<p>by <a href="{{url_for('profile', user = data[0][7])}}"><b>{{ data[0][7] }}</b></a> </p>
+	</div>
+	</footer>
+	</blockquote>
+
+	{% if data[0][5] %}
+	<div style="margin-left:20px;" id="video">
+		<h2>Videos</h2>
+		<iframe width="560" height="315" src="{{ data[0][5] }}" frameborder="0"
+			allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+			allowfullscreen></iframe>
+	</div>
+	{% endif %}
+
+	<div style="margin-left: 20px; padding-top: 50px;">
+		<button type="button" id="upvote" name="upvote" class="btn btn-success btn-circle"><i class="fa fa-chevron-up"></i> Upvote</button>
+		<button type="button" id="downvote" name="downvote" class="btn btn-danger btn-circle"><i class="fa fa-chevron-down"></i> Downvote</button>
+	</div>
+
+	<!-- comment section -->
+	<div class="row" style="margin:20px;">
+		<h3>Comments</h3>
+		<hr style="border-color: black;margin-top: 0px;">
+		<div class="row" style="margin:0px;">
+			<div class="well well-sm col-lg-6">
+			<form method="POST" action="{{ url_for('addcomment', post_id=data[0][0]) }}" >
+				<div class="form-group">
+					<label class="has-float-label">Write a comment</label>
+					<input type="text" name="mycomment" class="form-control" placeholder="leave a comment">
+				</div>
+				{% if user %}
+					<div class="row"><div class="col-lg-6"><p>Posting as <b style="color: green;">{{ user }}</b></p></div></div>
+				{% else %}
+					<div class="row">
+					<div class="form-group col-lg-6">
+						<label class="has-float-label">Name</label>
+						<input type = "text" name="myname" class="form-control" placeholder = "Name(required)">
+					</div>
+					<div class="col-lg-6" style="border-left: solid 1px;">
+						<h6>OR</h6>
+						<a href="{{url_for('login_page')}}" class="btn btn-primary"><span class="glyphicon glyphicon-log-in"></span> login</a>
+					</div>
+					</div>
+				{% endif %}
+				<button type="submit" class="btn btn-primary">submit</button>
+			</form>
+			</div>
+		</div>
+
+		<div class="row panel-group" style="margin:0px;">
+			{% for c in comments %}
+				<div class="panel panel-info" style="margin-bottom: -5px;">
+					<div class="panel-heading" style="padding:0px;">
+						<p><b style="color: red;font-size :15px;">{{ c[1] }}</b> on <b style="color: #555555;">{{ c[3] }}</b> says</p>
+						{% if c[1]==user and c[4] %}
+						<div  style="float: right;" data-toggle="tooltip" data-placement="top" title="Delete">
+							<a href="{{ url_for('deletecomment', post_id=data[0][0], comment_id=c[0]) }}" 
+							class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
+						</div>
+						{% endif %}
+					</div>
+					<div class="panel-body" style="padding:1px;">
+						<p> {{ c[2] }} </p>
+					</div>
+				</div>
+				<br>
+			{% endfor %}
+		</div>
+	</div>
+	<!-- ends here -->
+{% endblock main_content %}

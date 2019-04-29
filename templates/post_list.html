@@ -1,61 +1,36 @@
-<!DOCTYPE html>
-<html>
+{% extends "template.html" %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    
-    <link rel="stylesheet" href="{{url_for('static', filename='css/post_list.css')}}">
+{% block extra_head %}
+    {% if msg=="top" %}
+    <title>Top posts</title>
+    {% elif msg=="latest" %}
+        <title>Latest posts</title>
+    {% elif msg=="search" %}
+        <title>Search result</title>
+    {% endif %}
+    <script>
+        function setActive() {
+            var element = document.getElementById('{{msg}}');
+            element.classList.add("active");
+        }
+    </script>
+{% endblock %}
 
-</head>
-
-<body style="background-color: #1199ff;padding-top: 70px;">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Partition Memories</a>
-            </div>
-            <ul class="nav navbar-nav">
-                <li><a href="{{url_for('home')}}">Home</a></li>
-                <li><a href="{{ url_for('top_posts') }}">Top Posts</a></li>
-                <li><a id="latest" name="latest" href="{{url_for('post_list')}}">Latests Posts</a></li>
-                <li><a href="#">About Us</a></li>
-            </ul>
-            {% if session.get('username')%}
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{ url_for('dashboard') }}"><span class="glyphicon glyphicon-user"></span> Dashboard</a></li>
-				<li><a href="{{ url_for('profile', user=session.get('username')) }}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-				<li><a href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-			</ul>
-			{% else %}
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-                <li><a href="{{url_for('login_page')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-            </ul>
-            {% endif %}
+{% block main_content %}
+    {% for post in posts %}
+    <div class="post">
+        <div class="votes">
+            <p style="color: green;"> +{{ post[2] }}</p>
+            <p style="color: red">-{{ post[3] }}</p>
         </div>
-    </nav>
-    <div class="container" style="background-color: white;">
-        <div  style="min-height: 600px;">
-            {% for post in posts %}
-            <div class="post">
-                <div class="votes">
-                    <p style="color: green;"> +{{ post[2] }}</p>
-                    <p style="color: red">-{{ post[3] }}</p>
-                </div>
-                <div class="postlink">
-                    <header>
-                        <a href="{{url_for('post', post_id = post[0]) }}" style="font-size:30px;">{{ post[1] }}</a>
-                         by <a href="{{url_for('profile', user = 'post[6]')}}"><b>{{ post[6] }}</b></a>
-                         on <b>{{ post[5] }}</b>
-                    </header>					
-                    <p>{{ post[4][:20] }}...</p>
-                </div>
-            </div>
-            {% endfor %}
+        <div class="postlink">
+            <header>
+                <a href="{{url_for('post', post_id = post[0]) }}" style="font-size:30px;">{{ post[1] }}</a>
+                    by <a href="{{url_for('profile', user = 'post[6]')}}"><b>{{ post[6] }}</b></a>
+                    on <b>{{ post[5] }}</b>
+            </header>					
+            <p>{{ post[4][:20] }}...</p>
         </div>
     </div>
-</body>
+    {% endfor %}
+{% endblock main_content %}

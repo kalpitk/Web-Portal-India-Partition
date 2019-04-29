@@ -1,178 +1,128 @@
-<!DOCTYPE html>
-<html>
+{% extends "template.html" %}
 
-<head>
-	<title>Dashboard</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-	<script>
-		function show(shown) {
-			if (shown=='posted') {
-				document.getElementById('posted').style.display='';
-				document.getElementById('unapp').style.display='none';
-				if ('{{ isadmin }}' != 'False'){
-					document.getElementById('mods').style.display='none';
-				}
-			} 
-			else if(shown=='unapp'){
-				document.getElementById('posted').style.display='none';
-				document.getElementById('unapp').style.display='';
-				if ('{{ isadmin }}' != 'False'){
-					document.getElementById('mods').style.display='none';
-				}
+{% block extra_head %}
+<script>
+	function show(shown) {
+		if (shown=='posted') {
+			document.getElementById('posted').style.display='';
+			document.getElementById('unapp').style.display='none';
+			if ('{{ isadmin }}' != 'False'){
+				document.getElementById('mods').style.display='none';
 			}
-			else
-			{
-				document.getElementById('posted').style.display='none';
-				document.getElementById('unapp').style.display='none';
-				document.getElementById('mods').style.display='';
+		} 
+		else if(shown=='unapp'){
+			document.getElementById('posted').style.display='none';
+			document.getElementById('unapp').style.display='';
+			if ('{{ isadmin }}' != 'False'){
+				document.getElementById('mods').style.display='none';
 			}
-			return false;
 		}
-		$(document).ready(function(){
-			$('[data-toggle="tooltip"]').tooltip();   
-		});
-	</script>
+		else
+		{
+			document.getElementById('posted').style.display='none';
+			document.getElementById('unapp').style.display='none';
+			document.getElementById('mods').style.display='';
+		}
+		return false;
+	}
+	$(document).ready(function(){
+		$('[data-toggle="tooltip"]').tooltip();   
+	});
+</script>
+{% endblock extra_head %}
 
-	<link rel="stylesheet" href="{{url_for('static', filename='css/post_list.css')}}">
+{% block main_content %}
 
-</head>
-
-<body style="background-color: #1199ff;padding-top: 70px;">
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Partition Memories</a>
+{% if ismod %}
+<ul class="nav nav-tabs" style="margin-bottom: 0px;">
+	<li><a href="#posted" onclick="return show('posted');">Posted</a></li>
+	<li><a href="#unapp" onclick="return show('unapp');">Unapproved</a></li>
+	{% if isadmin %}
+		<li><a href="#mods" onclick="return show('mods');">Moderators</a></li>
+	{% endif %}
+</ul>
+{% endif %}
+<div id="posted" class="postlist well" style="padding-left: 0px;">
+	<h3 style="padding-left:15px;">Posted</h3>
+	{% if not(data) %}
+	<div class="alert alert-info" style="width: 200px;margin:20px;">
+		No posts are posted yet<strong>!</strong>
+	</div>		
+	{% else %}
+	{% for p in data %}
+		<div class="post">
+			<div class="votes">
+				<p style="color: green;"> +{{ p[2] }}</p>
+				<p style="color: red">-{{ p[3] }}</p>
 			</div>
-			<ul class="nav navbar-nav">
-				<li><a href="{{url_for('home')}}">Home</a></li>
-				<li><a href="{{ url_for('top_posts') }}">Top Posts</a></li>
-				<li><a id="latest" name="latest" href="{{url_for('post_list')}}">Latests Posts</a></li>
-				<li><a href="#">About Us</a></li>
-			</ul>
-			{% if user %}
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#"><span class="glyphicon glyphicon-bell"></span></a></li>
-				<li class="active"><a href="{{ url_for('dashboard') }}" ><span class="glyphicon glyphicon-user"></span> Dashboard</a></li>
-				<li><a href="{{ url_for('profile', user=user)}}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-				<li><a href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-			</ul>
-			{% else %}
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
-				</li>
-				<li><a href="{{url_for('login_page')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-			</ul>
-			{% endif %}
+			<div class="postlink">
+				<div class="row">
+					<div class="col-lg-9 col-md-9">
+						<a href="{{url_for('post', post_id = p[0]) }}" style="font-size:30px;">{{ p[1] }}</a>
+							by <a href="{{url_for('profile', user = 'p[6]')}}"><b>{{ p[6] }}</b></a>
+							on <b>{{ p[5] }}</b>
+						<p>{{ p[4][:20] }}...</p>
+					</div>
+					<div class="col-lg-2 col-md-2">
+						{% if p[8] %}
+						<div class="alert alert-success" style="text-align:center;">Approved</div>
+						{% else %}
+						<div class="alert alert-danger" style="text-align:center;">NOT approved</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
 		</div>
-	</nav>
-	<div class="container" style="background-color: white;">
-		<div style="min-height: 600px;">
-			{% if ismod %}
-			<ul class="nav nav-tabs" style="margin-bottom: 0px;">
-				<li><a href="#posted" onclick="return show('posted');">Posted</a></li>
-				<li><a href="#unapp" onclick="return show('unapp');">Unapproved</a></li>
-				{% if isadmin %}
-					<li><a href="#mods" onclick="return show('mods');">Moderators</a></li>
-				{% endif %}
-			</ul>
-			{% endif %}
-			<div id="posted" class="postlist well" style="padding-left: 0px;">
-				<h3 style="padding-left:15px;">Posted</h3>
-				{% if not(data) %}
-				<div class="alert alert-info" style="width: 200px;margin:20px;">
-					No posts are posted yet<strong>!</strong>
-				</div>		
-				{% else %}
-				{% for p in data %}
-					<div class="post">
-						<div class="votes">
-							<p style="color: green;"> +{{ p[2] }}</p>
-							<p style="color: red">-{{ p[3] }}</p>
-						</div>
-						<div class="postlink">
-							<div class="row">
-								<div class="col-lg-9 col-md-9">
-									<a href="{{url_for('post', post_id = p[0]) }}" style="font-size:30px;">{{ p[1] }}</a>
-									 by <a href="{{url_for('profile', user = 'p[6]')}}"><b>{{ p[6] }}</b></a>
-									 on <b>{{ p[5] }}</b>
-									<p>{{ p[4][:20] }}...</p>
-								</div>
-								<div class="col-lg-2 col-md-2">
-									{% if p[8] %}
-									<div class="alert alert-success" style="text-align:center;">Approved</div>
-									{% else %}
-									<div class="alert alert-danger" style="text-align:center;">NOT approved</div>
-									{% endif %}
-								</div>
-							</div>
-						</div>
-					</div>
-				{% endfor %}
-				{% endif %}
-			</div>
+	{% endfor %}
+	{% endif %}
+</div>
 
-			{% if ismod %}
-			<div id="unapp" class="postlist well" style="padding-left: 0px;display: none;">
-				<h3>Unapproved Posts</h3>
-			{% if not(unapproved_list) %}
-				<div class="alert alert-success" style="width: 300px;margin:20px;">
-					No unapproved post left.<strong>WELL DONE!</strong>
-				</div>
-			{% else %}
-			{% for u in unapproved_list %}
-				<div class="post">
-					<div class="votes">
-						<p style="color: green;"> +{{ u[2] }}</p>
-						<p style="color: red">-{{ u[3] }}</p>
-					</div>
-					<div class="postlink">
-						<header>
-							<a href="{{url_for('post', post_id = u[0]) }}" style="font-size:30px;">{{ u[1] }}</a>
-							 by <a href="{{url_for('profile', user = 'u[6]')}}"><b>{{ u[6] }}</b></a>
-							 on <b>{{ u[5] }}</b>
-						</header>					
-						<p>{{ u[4][:20] }}...</p>
-					</div>
-				</div>
-			{% endfor %}
-			{% endif %}
-			</div>
-			{% endif %}
-
-			{% if isadmin %}
-			<div id="mods" class="postlist well" style="padding-left: 0px;display: none;">
-				<h3>Moderators</h3>
-			{% for m in mods %}
-				<div class="post">
-					<div class="votes">
-						<p style="color: green;"> +{{ m[3] }}</p>
-					</div>
-					<div class="postlink">
-						<div  style="float: right;" data-toggle="tooltip" data-placement="top" title="Demote">
-							<a href="{{ url_for('removeMod',username=m[0]) }} " 
-							class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
-						</div>
-						<a href="{{ url_for('profile',user = m[0]) }}">{{ m[0] }}</a>
-						<b> as {{ m[1] }}</b>
-					</div>
-				</div>
-			{% endfor %}
-			</div>
-			{% endif %}
+{% if ismod %}
+<div id="unapp" class="postlist well" style="padding-left: 0px;display: none;">
+	<h3>Unapproved Posts</h3>
+{% if not(unapproved_list) %}
+	<div class="alert alert-success" style="width: 300px;margin:20px;">
+		No unapproved post left.<strong>WELL DONE!</strong>
+	</div>
+{% else %}
+{% for u in unapproved_list %}
+	<div class="post">
+		<div class="votes">
+			<p style="color: green;"> +{{ u[2] }}</p>
+			<p style="color: red">-{{ u[3] }}</p>
 		</div>
-		<div class="row" style="background-color: #76ECFE;text-align: center;">
-			<br>
-			<a href="#"><h3>About</a> |
-			<a href="#">Help</a> |
-			<a href="#">License</a> |
-			<a href="#">Contact Us</h3></a>
-			</br>
+		<div class="postlink">
+			<header>
+				<a href="{{url_for('post', post_id = u[0]) }}" style="font-size:30px;">{{ u[1] }}</a>
+					by <a href="{{url_for('profile', user = 'u[6]')}}"><b>{{ u[6] }}</b></a>
+					on <b>{{ u[5] }}</b>
+			</header>					
+			<p>{{ u[4][:20] }}...</p>
 		</div>
 	</div>
-</body>
+{% endfor %}
+{% endif %}
+</div>
+{% endif %}
 
-</html
+{% if isadmin %}
+<div id="mods" class="postlist well" style="padding-left: 0px;display: none;">
+	<h3>Moderators</h3>
+{% for m in mods %}
+	<div class="post">
+		<div class="votes">
+			<p style="color: green;"> +{{ m[3] }}</p>
+		</div>
+		<div class="postlink">
+			<div  style="float: right;" data-toggle="tooltip" data-placement="top" title="Demote">
+				<a href="{{ url_for('removeMod',username=m[0]) }} " 
+				class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
+			</div>
+			<a href="{{ url_for('profile',user = m[0]) }}">{{ m[0] }}</a>
+			<b> as {{ m[1] }}</b>
+		</div>
+	</div>
+{% endfor %}
+</div>
+{% endif %}
+{% endblock main_content %}		

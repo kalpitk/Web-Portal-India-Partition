@@ -1,87 +1,45 @@
-<html>
+{% extends "template.html" %}
 
-<head>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-</head>
+{% block extra_head %}
+    <title>Dashboard</title>
+{% endblock %}
 
-<body style="background-color: #1199ff;padding-top: 70px;">
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Partition Memories</a>
-            </div>
-            <ul class="nav navbar-nav">
-                <li><a href="{{url_for('home')}}">Home</a></li>
-                <li><a href="{{ url_for('top_posts') }}">Top Posts</a></li>
-                <li><a id="latest" name="latest" href="{{url_for('post_list')}}">Latests Posts</a></li>
-                <li><a href="#">About Us</a></li>
-            </ul>
-            {% if session.get('username')%}
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{ url_for('dashboard') }}"><span class="glyphicon glyphicon-user"></span> Dashboard</a></li>
-				<li class="active"><a href="{{ url_for('profile', user=session.get('username')) }}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-				<li><a href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-			</ul>
-			{% else %}
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
-                </li>
-                <li><a href="{{url_for('login_page')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-            </ul>
-            {% endif %}
-        </div>
-    </nav>
-
-
-
-    <div class="container" style="background-color: white;">
-        <div style="min-height: 600px;">
+{% block main_content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="well well-sm">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-6">
-                        <div class="well well-sm">
-                            <div class="row">
-                                
-                                <div class="col-sm-6 col-md-8">
-                                    {% if user %}
-                                    <h4>Username : {{user[0][0]}}</h4>
-                                    <h4>Name : {{user[0][1]}}</h4>
-                                    {%endif%}
-                                    
-                                    
-                                    <p>
-                                        <!--i class="glyphicon glyphicon-envelope"></i-->
-                                        <h4>Email : {{user[0][2]}}</h4>
-                                        <br />
-                                        <!--i class="glyphicon glyphicon-"></i> At present he has no links linked-->
-                                        {%for p in post%}
-                                        <div>
-                                            <a href="{{url_for('post', post_id = p[0]) }}">
-                                        <h4>{{p[1]}}</h4>
-                                    </a>
-                                </div>
-                                {% endfor%}
-                                
-                                {%if user[0][3]==1 %}
-                                <h4><span class="glyphicon glyphicon-star"></span> Moderator</h4>
-                                {% endif%}
-                                
-                                {%if user[0][4]==1 %}
-                                <h4><span class="glyphicon glyphicon-star"></span> Admin</h4>
-                                {% endif%}
-                                
-                                
-                                <h4>Contributions : {{user[0][5]}}</h4>
-                                <br />
+                    
+                    <div class="col-sm-6 col-md-8">
+                        {% if user %}
+                        <h4>Username : {{user[0][0]}}</h4>
+                        <h4>Name : {{user[0][1]}}</h4>
+                        {%endif%}
+                        
+                        <p>
+                            <!--i class="glyphicon glyphicon-envelope"></i-->
+                            <h4>Email : {{user[0][2]}}</h4>
+                            <br />
+                            <!--i class="glyphicon glyphicon-"></i> At present he has no links linked-->
+                            {%for p in post%}
+                            <div>
+                                <a href="{{url_for('post', post_id = p[0]) }}"><h4>{{p[1]}}</h4></a>
                             </div>
-                        </div>
+                        {% endfor%}
+                        
+                        {%if user[0][3]==1 %}
+                        <h4><span class="glyphicon glyphicon-star"></span> Moderator</h4>
+                        {% endif%}
+                        
+                        {%if user[0][4]==1 %}
+                        <h4><span class="glyphicon glyphicon-star"></span> Admin</h4>
+                        {% endif%}
+                        
+                        <h4>Contributions : {{user[0][5]}}</h4>
+                        <br />
                     </div>
                 </div>
             </div>
-            </div>
         </div>
-    </body>
-    
-    </html>
+    </div>
+{% endblock main_content %}

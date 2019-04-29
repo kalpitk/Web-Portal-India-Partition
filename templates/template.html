@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/post_list.css') }}">
+    {% block extra_head %}{% endblock %}
+    <style>
+        .navbar-inverse .navbar-nav>li>a {
+            color: black;
+        }
+        .active{
+            color:white;
+        }
+        .navelement {
+            font-size: 30px;
+            font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        #head {
+            background-image: url('/static/img/b1.png');
+            background-position: center;
+        }
+        @media only screen and (max-width: 991px){
+            #img {height: 99px;}
+        }
+        @media only screen and (max-width: 767px){
+            #nav1 {display: none;}
+        }
+        @media only screen and (min-width: 768px){
+            #nav2 {display: none;}
+        }
+        @media only screen and (max-width: 599px){
+            #img {height: 69px;}
+        }
+    </style>
+</head>
+
+<body style="background-color:burlywood;">
+	<div class="container-fluid" id="head">
+		<div class="pull-left"><img src="/static/img/iiti-logo.png" id="img" height="150px" style="padding-top: 10px; filter: drop-shadow(0 0 2px black) drop-shadow(-1px -1px 0 black);"/></div>
+		<!--div>Partition Memories</div-->
+		<div class="pull-right"><img src="/static/img/dh-logo.png" id="img" height="150px" style="filter: drop-shadow(2px 2px 2px black) drop-shadow(-1px -1px 0 black);"/></div>
+	</div>
+	<nav class="navbar navbar-inverse" id="fix" style="background-color:rgb(201,166,125);">
+		<div class="container-fluid" id="nav1">
+			<ul class="nav navbar-nav">
+				<li id="home"><a href="{{url_for('home')}}" class="navelement">Home</a></li>
+				<li id="top"><a href="{{ url_for('top_posts') }}" class="navelement">Top Posts</a></li>
+				<li id="latest"><a href="{{url_for('post_list')}}" class="navelement">Latests Posts</a></li>
+				<li id="about"><a href="#" class="navelement">About Us</a></li>
+			</ul>
+            <div class="nav navbar-nav navbar-right dropdown" style="margin-right: 2px;padding: 5px;">
+                <div class="dropdown-toggle" data-toggle="dropdown" style="font-size: 30px;">
+                    <span class="glyphicon glyphicon-user"></span></div>
+                <ul class="dropdown-menu">
+                {% if session.get('username')%}
+                    <li><a href="{{ url_for('dashboard') }}"><span class="glyphicon glyphicon-user"></span> Dashboard</a></li>
+                    <li><a href="{{ url_for('profile', user=session.get('username')) }}" ><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                    <li><a href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                {% else %}
+                    <li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+                    </li>
+                    <li><a href="{{url_for('login_page')}}" ><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+        <div class="container-fluid" id="nav2">
+            <div data-toggle="collapse" data-target="#collapsednav" style="height: 30px;font-size: 30px;">
+                <span class="glyphicon glyphicon-align-justify pull-right"></span>
+            </div>
+            <ul class="nav navbar-nav collapse" id="collapsednav">
+                <li id="home"><a href="{{url_for('home')}}" class="navelement">Home</a></li>
+                <li id="top"><a href="{{ url_for('top_posts') }}" class="navelement">Top Posts</a></li>
+                <li id="latest"><a href="{{url_for('post_list')}}" class="navelement">Latests Posts</a></li>
+                <li id="about"><a href="#" class="navelement">About Us</a></li>
+                <hr style="margin: 5px;"></hr>
+            {% if session.get('username')%}
+                <li><a href="{{ url_for('dashboard') }}"><span class="glyphicon glyphicon-user"></span> Dashboard</a></li>
+                <li><a href="{{ url_for('profile', user=session.get('username')) }}" ><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                <li><a href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+            {% else %}
+                <li><a href="{{url_for('sign_up_page')}}"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+                </li>
+                <li><a href="{{url_for('login_page')}}" ><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+            {% endif %}
+        </div>
+	</nav>
+	<script>
+        setActive();
+		window.onscroll = function() {scrollFix()};
+		var header = document.getElementById("fix");
+		var sticky = header.offsetTop;
+		
+		function scrollFix() {
+			var h=$('#fix').outerHeight(true) ;
+			h=h.toString()+'px';
+			if (window.pageYOffset > sticky) {
+			header.classList.add("navbar-fixed-top");
+			document.getElementById('fix1').style.marginTop=h;
+			} else {
+			header.classList.remove("navbar-fixed-top");
+			document.getElementById('fix1').style.marginTop='0px';
+			}
+		}
+    </script>
+	<div class="container" id="fix1" style="background-image: url('static/img/msq.jpg');background-size: cover;">
+		<div style="min-height: 600px">
+            {% block main_content %}
+            {% endblock main_content %}    
+		</div>        
+        <div class="row" style="background-color: rgba(205,205,205,0.7);text-align: center;">
+			<br>
+			<a href="#">
+				<h3>About
+				</a> |
+				<a href="#">Help</a> |
+				<a href="#">License</a> |
+				<a href="#">Contact Us</h3></a>
+			</br>
+		</div>
+    </div>
+</body>

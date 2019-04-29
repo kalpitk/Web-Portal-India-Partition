@@ -143,7 +143,7 @@ def top_posts():
 						     writer_username,migrated FROM post WHERE is_approved IS TRUE AND is_blog IS FALSE ORDER BY upvotes""")
   res = cursor.fetchall()
   res.reverse()
-  return render_template('post_list.html', posts=res)
+  return render_template('post_list.html', posts=res, msg="top")
 
 @app.route('/search_post')
 def search_post():
@@ -157,7 +157,7 @@ def search_post():
                  LIKE %s ORDER BY upvotes""", (query,))
   res = cursor.fetchall()
   res.reverse()
-  return render_template('post_list.html', posts=res)
+  return render_template('post_list.html', posts=res, msg="search")
 
 @app.route('/post_list')
 def post_list():
@@ -189,7 +189,7 @@ def post_list():
 
   res = cursor.fetchall()
   res.reverse()
-  return render_template('post_list.html', posts=res)
+  return render_template('post_list.html', posts=res, msg="latest")
 
 @app.route('/dashboard')
 def dashboard():

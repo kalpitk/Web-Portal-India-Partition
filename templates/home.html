@@ -1,131 +1,68 @@
-<!DOCTYPE html>
-<html>
+{% extends "template.html" %}
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}"> -->
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/post_list.css') }}">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% block extra_head %}
+<title>Partition Memories</title>
 	<script src="{{ url_for('static', filename='js/map.js') }}"></script>
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
 	</script>
 	<script> const coordinates = {{ res|tojson|safe }} </script>
-</head>
-
-<body style="background-color:burlywood;">
-	<div class="row" style="height:160px; background-image: url('/static/img/b1.png'); background-position: center;">
-		<div class="col-lg-2 col-md-2"><img src="/static/img/iiti-logo.png" height="150" style="padding-top: 10px; padding-left: 10px;  filter: drop-shadow(0 0 2px black) drop-shadow(-1px -1px 0 black);"/></div>
-		<!--div>Partition Memories</div-->
-		<div class="pull-right"><img src="/static/img/dh-logo.png" height="150" style="padding-right: 20px; filter: drop-shadow(2px 2px 2px black) drop-shadow(-1px -1px 0 black);"/></div>
-	</div>
-	<nav class="navbar navbar-inverse" id="fix" style="background-color:rgb(201,166,125); height: 52px;">
-		<div class="container-fluid">
-			<ul class="nav navbar-nav">
-				<li class="active"><a href="{{url_for('home')}}" style="color: white;text-shadow: 1px 1px 2px black; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Home</a></li>
-				<li><a href="{{ url_for('top_posts') }}" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Top Posts</a></li>
-				<li><a id="latest" name="latest" href="{{url_for('post_list')}}" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Latests Posts</a></li>
-				<li><a href="#" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">About Us</a></li>
-			</ul>
-			{% if session.get('username')%}
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{ url_for('dashboard') }}"><span class="glyphicon glyphicon-user" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"></span> Dashboard</a></li>
-				<li><a href="{{ url_for('profile', user=session.get('username')) }}" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-				<li><a href="{{url_for('logout')}}" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-			</ul>
-			{% else %}
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="{{url_for('sign_up_page')}}" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; height: 52px; padding: 8px;"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
-				</li>
-				<li><a href="{{url_for('login_page')}}" style="color: black;text-shadow: 1px 1px 2px white; font-size: 30px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; height: 52px; padding: 8px;"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-			</ul>
-			{% endif %}
-		</div>
-	</nav>
 	<script>
-		window.onscroll = function() {myFunction()};
-		
-		var header = document.getElementById("fix");
-		var sticky = header.offsetTop;
-		
-		function myFunction() {
-			var h=$('#fix').outerHeight(true) ;
-			h=h.toString()+'px';
-			console.log(h);
-			if (window.pageYOffset > sticky) {
-			header.classList.add("navbar-fixed-top");
-			document.getElementById('fix1').style.marginTop=h;
-			} else {
-			header.classList.remove("navbar-fixed-top");
-			document.getElementById('fix1').style.marginTop='0px';
+		function setActive() {
+			var divs = document.querySelectorAll('#home');
+			for (var i = 0; i < divs.length; i++) {
+				divs[i].classList.add('active');
 			}
 		}
 	</script>
-	<div class="container" id="fix1" style="background-image: url('static/img/msq.jpg');background-size: cover;">
-		<div style="min-height: 600px">
-			<div class="row" style="margin: 20px;">
-				<div class=" col-lg-8 col-md-8" style="border-right:solid #1199ff 1px;">
-					<div style="min-height:500px;" id="map">
-					</div>
-					<h1 style="color: black; font-weight:1000; text-shadow: 1px 1px 2px white; padding-top: 20px;">Recent Interviews</h1>
-					<div class="row" style="margin:2px;">
-							{% for post in posts %}
-							<div class="post">
-								<div class="votes">
-									<p style="color: green; padding-top: 7px;"><span class="glyphicon glyphicon glyphicon-chevron-up"></span>{{ post[2] }}</p>
-									<p style="color: red"><span class="glyphicon glyphicon glyphicon-chevron-down"></span>{{ post[3] }}</p>
-								</div>
-								<div class="postlink">
-									<header>
-										<a href="{{url_for('post', post_id = post[0]) }}" style="font-size:30px;">{{ post[1] }}</a>
-										 by <a href="{{url_for('profile', user = 'post[6]')}}"><b>{{ post[6] }}</b></a>
-										 on <b>{{ post[5] }}</b>
-									</header>					
-									<p>{{ post[4][:20] }}...</p>
-								</div>
-							</div>
-							{% endfor %}
-					</div>
-				</div>
-				
-				<div class="col-lg-4 col-md-4">
-					<form style="height: 50px;" action="/search_post">
-						<input type="text" id="query" name="query" style="width: 100%; padding-top: 0px;" placeholder="Search Post ...">
-						<button type="submit" style="position:absolute; right:14px; top:0; float: right;"><i class="fa fa-search"></i></button>
-					</form>
-					<div class="well signin2 " style="padding-top: 0px;background-color:rgba(245,245,245,0.7)">
-						<h1>News</h1>
-						<ul>
-							<li><a href="https://www.theguardian.com/cities/2019/apr/12/life-swap-the-families-forced-to-trade-places-after-india-partition-india-pakistan-kolkata-dhaka">Life swap: the families forced to trade places after Indian Partition </a></li>
-							<li><a href="https://www.hindustantimes.com/world-news/ancient-indian-writing-makes-a-mark-in-key-uk-review/story-CmGZZZMahgNwMXUiTUwJMI.html">Ancient Indian writing makes a mark in key UK review</a></li>
-							<li><a href="https://www.nytimes.com/2019/04/08/books/review/qurratulain-hyder-river-of-fire.html">An Urdu Epic Puts India’s Partition Into Historical Perspective</a></li>
-						</ul>
-					</div>
-					<div class="well signin2 " style="overflow-y:scroll;padding-top: 0px;background-color:rgba(245,245,245,0.7);max-height: 600px;">
-						<h1>Blog Posts</h1>
-						<ul>
-							{% for post in posts1 %}
-							<li><a href="/post/{{post[0]}}">{{post[1]}}</a></li>
-							{% endfor %}
-						</ul>
-					</div>
-				</div>
-			</div>
+{% endblock extra_head %}
 
+{% block main_content %}
+<div class="row" style="margin: 20px;">
+	<div class=" col-lg-8 col-md-8 col-sm-8" style="border-right:solid #1199ff 1px;">
+		<div style="min-height:500px;" id="map">
 		</div>
-		<div class="row" style="background-color: rgba(245,245,245,0.7);text-align: center;">
-			<br>
-			<a href="#">
-				<h3>About
-				</a> |
-				<a href="#">Help</a> |
-				<a href="#">License</a> |
-				<a href="#">Contact Us</h3></a>
-			</br>
+		<h1 style="color: black; font-weight:1000; text-shadow: 1px 1px 2px white; padding-top: 20px;">Recent Interviews</h1>
+		<div class="row" style="margin:2px;">
+				{% for post in posts %}
+				<div class="post">
+					<div class="votes">
+						<p style="color: green; padding-top: 7px;"><span class="glyphicon glyphicon glyphicon-chevron-up"></span>{{ post[2] }}</p>
+						<p style="color: red"><span class="glyphicon glyphicon glyphicon-chevron-down"></span>{{ post[3] }}</p>
+					</div>
+					<div class="postlink">
+						<header>
+							<a href="{{url_for('post', post_id = post[0]) }}" style="font-size:30px;">{{ post[1] }}</a>
+								by <a href="{{url_for('profile', user = post[6])}}"><b>{{ post[6] }}</b></a>
+								on <b>{{ post[5] }}</b>
+						</header>					
+						<p>{{ post[4][:20] }}...</p>
+					</div>
+				</div>
+				{% endfor %}
 		</div>
 	</div>
-</body>
-
-</html>
+	
+	<div class="col-lg-4 col-md-4 col-sm-4">
+		<form style="height: 50px;" action="/search_post">
+			<input type="text" id="query" name="query" style="width: 100%; padding-top: 0px;" placeholder="Search Post ...">
+			<button type="submit" style="position:absolute; right:14px; top:0; float: right;"><i class="fa fa-search"></i></button>
+		</form>
+		<div class="well signin2 " style="padding-top: 0px;background-color:rgba(245,245,245,0.7)">
+			<h1>News</h1>
+			<ul>
+				<li><a href="https://www.theguardian.com/cities/2019/apr/12/life-swap-the-families-forced-to-trade-places-after-india-partition-india-pakistan-kolkata-dhaka">Life swap: the families forced to trade places after Indian Partition </a></li>
+				<li><a href="https://www.hindustantimes.com/world-news/ancient-indian-writing-makes-a-mark-in-key-uk-review/story-CmGZZZMahgNwMXUiTUwJMI.html">Ancient Indian writing makes a mark in key UK review</a></li>
+				<li><a href="https://www.nytimes.com/2019/04/08/books/review/qurratulain-hyder-river-of-fire.html">An Urdu Epic Puts India’s Partition Into Historical Perspective</a></li>
+			</ul>
+		</div>
+		<div class="well signin2 " style="overflow-y:scroll;padding-top: 0px;background-color:rgba(245,245,245,0.7);max-height: 600px;">
+			<h1>Blog Posts</h1>
+			<ul>
+				{% for post in posts1 %}
+				<li><a href="/post/{{post[0]}}">{{post[1]}}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock main_content %}
