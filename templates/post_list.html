@@ -7,11 +7,15 @@
         <title>Latest posts</title>
     {% elif msg=="search" %}
         <title>Search result</title>
+    {% elif msg=="top1" %}
+        <title>Top Blogs</title>
     {% endif %}
     <script>
         function setActive() {
-            var element = document.getElementById('{{msg}}');
-            element.classList.add("active");
+            var divs = document.querySelectorAll('#{{msg}}');
+			for (var i = 0; i < divs.length; i++) {
+				divs[i].classList.add('active');
+			}
         }
     </script>
 {% endblock %}
@@ -33,4 +37,5 @@
         </div>
     </div>
     {% endfor %}
+<script>setActive();</script>
 {% endblock main_content %}

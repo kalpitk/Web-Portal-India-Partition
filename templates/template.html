@@ -18,7 +18,7 @@
             color:white;
         }
         .navelement {
-            font-size: 30px;
+            font-size: 20px;
             font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
         #head {
@@ -42,18 +42,19 @@
 
 <body style="background-color:burlywood;">
 	<div class="container-fluid" id="head">
-		<div class="pull-left"><img src="/static/img/iiti-logo.png" id="img" height="150px" style="padding-top: 10px; filter: drop-shadow(0 0 2px black) drop-shadow(-1px -1px 0 black);"/></div>
+		<div class="pull-left"><img src="/static/img/1.png" id="img" height="100px" style="padding-top: 10px; filter: drop-shadow(0 0 2px black) drop-shadow(-1px -1px 0 black);"/></div>
+		<div class="pull-right"><img src="/static/img/iiti-logo.png" id="img" height="50px" style="margin-top: 50px; filter: drop-shadow(0 0 2px black) drop-shadow(-1px -1px 0 black);"/></div>
 		<!--div>Partition Memories</div-->
-		<div class="pull-right"><img src="/static/img/dh-logo.png" id="img" height="150px" style="filter: drop-shadow(2px 2px 2px black) drop-shadow(-1px -1px 0 black);"/></div>
+		<div class="pull-right"><img src="/static/img/dh-logo.png" id="img" height="50px" style="margin-top: 50px;margin-right: 5px;filter: drop-shadow(2px 2px 2px black) drop-shadow(-1px -1px 0 black);"/></div>
 	</div>
 	<nav class="navbar navbar-inverse" id="fix" style="background-color:rgb(201,166,125);">
 		<div class="container-fluid" id="nav1">
 			<ul class="nav navbar-nav">
 				<li id="home"><a href="{{url_for('home')}}" class="navelement">Home</a></li>
+				<li id="about"><a href="#" class="navelement">About</a></li>
                 <li id="top"><a href="{{ url_for('top_posts') }}" class="navelement">Top Posts</a></li>
                 <li id="top1"><a href="{{url_for('top_blogs')}}" class="navelement">Top Blogs</a></li>
 				<li id="latest"><a href="{{url_for('post_list')}}" class="navelement">Latests Posts</a></li>
-				<li id="about"><a href="#" class="navelement">About Us</a></li>
 			</ul>
             <div class="nav navbar-nav navbar-right dropdown" style="margin-right: 2px;padding: 5px;">
                 <div class="dropdown-toggle" data-toggle="dropdown" style="font-size: 30px;">
@@ -77,10 +78,10 @@
             </div>
             <ul class="nav navbar-nav collapse" id="collapsednav">
                 <li id="home"><a href="{{url_for('home')}}" class="navelement">Home</a></li>
+                <li id="about"><a href="#" class="navelement">About</a></li>
                 <li id="top"><a href="{{ url_for('top_posts') }}" class="navelement">Top Posts</a></li>
-                <li id="latest"><a href="{{url_for('top_blogs')}}" class="navelement">Top Blogs</a></li>
+                <li id="top1"><a href="{{url_for('top_blogs')}}" class="navelement">Top Blogs</a></li>
                 <li id="latest"><a href="{{url_for('post_list')}}" class="navelement">Latests Posts</a></li>
-                <li id="about"><a href="#" class="navelement">About Us</a></li>
                 <hr style="margin: 5px;"></hr>
             {% if session.get('username')%}
                 <li><a href="{{ url_for('dashboard') }}"><span class="glyphicon glyphicon-user"></span> Dashboard</a></li>
@@ -96,7 +97,6 @@
         </div>
 	</nav>
 	<script>
-        setActive();
 		window.onscroll = function() {scrollFix()};
 		var header = document.getElementById("fix");
 		var sticky = header.offsetTop;
