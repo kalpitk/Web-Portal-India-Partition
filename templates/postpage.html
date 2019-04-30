@@ -36,7 +36,7 @@
 
 		var migration1 = new XMLHttpRequest();
 		migration1.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
+			if (this.readyState == 4 && this.status == 200 && {{coord[0]}} && {{coord[1]}}) {
 				var myArr = JSON.parse(this.responseText);
 				migration.innerText = myArr.features[0].place_name;
 			}
@@ -47,7 +47,7 @@
 
 		var migration2 = new XMLHttpRequest();
 		migration2.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
+			if (this.readyState == 4 && this.status == 200 && {{coord[2]}} && {{coord[3]}}) {
 				var myArr = JSON.parse(this.responseText);
 				migration.innerHTML = "<b>" + migration.innerText + "</b>" + " to " + "<b>" + myArr.features[0].place_name + "</b>";
 			}
