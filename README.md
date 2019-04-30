@@ -1,5 +1,6 @@
-# Group-D
-Web Portal for Partition Project
+# Web Portal for Partition Project
+
+[![Build Status](https://travis-ci.org/kalpitk/Group-D.svg?branch=master)](https://travis-ci.org/kalpitk/Group-D)
 
 Installing python 2.7 dependencies
 

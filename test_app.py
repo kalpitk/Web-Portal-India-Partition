@@ -99,6 +99,5 @@ def test_post_list(client):
     assert res.find('/post/3') != -1
 
     res = client.get('/post_list?src_lat=28.94&src_lng=71.83').data
-    assert res.find('/post/1') != -1
     assert res.find('/post/3') != -1
 
