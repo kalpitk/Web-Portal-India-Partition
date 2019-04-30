@@ -21,13 +21,24 @@
             font-size: 20px;
             font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
+        .website-img {
+            float: left;
+        }
         #head {
             background-image: url('/static/img/b1.jpg');
             background-size: cover;
             background-position: center 75%;
         }
+        #img-logo {
+            margin-top: 70px;
+            filter: drop-shadow(2 2 2px black) drop-shadow(-1px -1px 0 black);
+        }
+        #img-website {
+            padding-top: 10px;
+            filter: drop-shadow(0 0 2px black) drop-shadow(-1px -1px 0 black);
+        }
         @media only screen and (max-width: 991px){
-            #img {height: 99px;}
+            /* #img {height: 99px;} */
         }
         @media only screen and (max-width: 767px){
             #nav1 {display: none;}
@@ -36,17 +47,24 @@
             #nav2 {display: none;}
         }
         @media only screen and (max-width: 599px){
-            #img {height: 69px;}
+            #img-logo {margin-top: 10px;}
+            .website-img {float: none;}
+            #img-website {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
         }
     </style>
 </head>
 
 <body style="background-color:burlywood;">
 	<div class="container-fluid" id="head">
-		<div class="pull-left"><img src="/static/img/websitelogo1.png" id="img" height="120px" style="padding-top: 10px; filter: drop-shadow(0 0 2px black) drop-shadow(-1px -1px 0 black);"/></div>
-		<div class="pull-right"><img src="/static/img/iiti-logo.png" id="img" height="50px" style="margin-top: 70px; filter: drop-shadow(0 0 2px black) drop-shadow(-1px -1px 0 black);"/></div>
-		<!--div>Partition Memories</div-->
-		<div class="pull-right"><img src="/static/img/dh-logo.png" id="img" height="50px" style="margin-top: 70px;margin-right: 5px;filter: drop-shadow(2px 2px 2px black) drop-shadow(-1px -1px 0 black);"/></div>
+		<div class="website-img"><img src="/static/img/websitelogo1.png" id="img-website" height="120px"/></div>
+        <div class="pull-right">
+            <img src="/static/img/iiti-logo.png" id="img-logo" height="60px" style="margin-right: 5px;"/>
+            <img src="/static/img/dh-logo.png" id="img-logo" height="60px"/>
+        </div>
 	</div>
 	<nav class="navbar navbar-inverse" id="fix" style="background-color:rgb(201,166,125);">
 		<div class="container-fluid" id="nav1">
