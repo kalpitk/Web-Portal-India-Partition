@@ -145,6 +145,14 @@ def top_posts():
   res.reverse()
   return render_template('post_list.html', posts=res, msg="top")
 
+@app.route('/top_blogs')
+def top_blogs():
+  cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
+						     writer_username,migrated FROM post WHERE is_approved IS TRUE AND is_blog IS TRUE ORDER BY upvotes""")
+  res = cursor.fetchall()
+  res.reverse()
+  return render_template('post_list.html', posts=res, msg="top1")
+
 @app.route('/search_post')
 def search_post():
   query = request.args.get('query')
@@ -317,5 +325,5 @@ def makepost():
 if __name__ == "__main__":
   app.config['SESSION_TYPE'] = 'filesystem'
   app.run(
-    # host='0.0.0.0', 
+    host='0.0.0.0', 
     debug=True)

@@ -20,8 +20,8 @@
     {% for post in posts %}
     <div class="post">
         <div class="votes">
-            <p style="color: green;"> +{{ post[2] }}</p>
-            <p style="color: red">-{{ post[3] }}</p>
+            <p style="color: green;"><span class="glyphicon glyphicon glyphicon-chevron-up"></span> {{ post[2] }}</p>
+            <p style="color: red"><span class="glyphicon glyphicon glyphicon-chevron-down"></span> {{ post[3] }}</p>
         </div>
         <div class="postlink">
             <header>
