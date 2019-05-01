@@ -82,6 +82,10 @@ def profile(user=None):
   post = cursor.fetchall()
   return render_template('user.html',user=res,post=post)
 
+@app.route('/about')
+def about():
+  return render_template('about.html')
+
 @app.route('/post/<post_id>')
 def post(post_id):
   if session.get('username') is None:

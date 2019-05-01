@@ -14,6 +14,7 @@
 			}
 		}
 	</script>
+	
 {% endblock extra_head %}
 
 {% block main_content %}
@@ -21,7 +22,7 @@
 	<div class=" col-lg-8 col-md-8 col-sm-8" style="border-right:solid #1199ff 1px;">
 		<div style="min-height:500px;" id="map">
 		</div>
-		<h1 style="color: black; font-weight:1000; text-shadow: 1px 1px 2px white; padding-top: 20px;">Recent Interviews</h1>
+		<h1>Recent Interviews</h1>
 		<div class="row" style="margin:2px;">
 				{% for post in posts %}
 				<div class="post">
@@ -29,13 +30,19 @@
 						<p style="color: green; padding-top: 7px;"><span class="glyphicon glyphicon glyphicon-chevron-up"></span>{{ post[2] }}</p>
 						<p style="color: red"><span class="glyphicon glyphicon glyphicon-chevron-down"></span>{{ post[3] }}</p>
 					</div>
-					<div class="postlink">
-						<header>
-							<a href="{{url_for('post', post_id = post[0]) }}" style="font-size:30px;">{{ post[1] }}</a>
-								by <a href="{{url_for('profile', user = post[6])}}"><b>{{ post[6] }}</b></a>
-								on <b>{{ post[5] }}</b>
-						</header>					
-						<p>{{ post[4][:20] }}...</p>
+					<div class="postlink row" style="overflow: hidden; ">
+						<div class="col-lg-10" style="overflow: hidden; padding-right: 0px; margin-right: 0px; margin-left: 0px; padding-left: 0px;">
+							<header>
+								<a href="{{url_for('post', post_id = post[0]) }}#nav1" style="font-size:20px;">{{ post[1] }}</a>
+									by <a href="{{url_for('profile', user = post[6])}}"><b>{{ post[6] }}</b></a>
+									on <b>{{ post[5] }}</b>
+							</header>
+												
+							<p>{{ post[4][:20] }}...</p>
+					</div>
+					<div class="pull-right col-lg-2" style="padding-left: 0px;">
+							<img src="https://img.youtube.com/vi/Amg44-MX4ZM/1.jpg"></img>
+						</div>
 					</div>
 				</div>
 				{% endfor %}
@@ -47,19 +54,19 @@
 			<input type="text" id="query" name="query" style="width: 100%; padding-top: 0px;" placeholder="Search Post ...">
 			<button type="submit" style="position:absolute; right:14px; top:0; float: right;"><i class="fa fa-search"></i></button>
 		</form>
-		<div class="well signin2 " style="padding-top: 0px;background-color:rgba(245,245,245,0.7)">
+		<div class="well signin2 " style="padding-top: 0px;background-color:rgba(245,245,245,0.8)">
 			<h1>News</h1>
 			<ul>
-				<li><a style="font-size: 25px;" href="https://www.theguardian.com/cities/2019/apr/12/life-swap-the-families-forced-to-trade-places-after-india-partition-india-pakistan-kolkata-dhaka">Life swap: the families forced to trade places after Indian Partition </a></li>
-				<li><a style="font-size: 25px;" href="https://www.hindustantimes.com/world-news/ancient-indian-writing-makes-a-mark-in-key-uk-review/story-CmGZZZMahgNwMXUiTUwJMI.html">Ancient Indian writing makes a mark in key UK review</a></li>
-				<li><a style="font-size: 25px;" href="https://www.nytimes.com/2019/04/08/books/review/qurratulain-hyder-river-of-fire.html">An Urdu Epic Puts India’s Partition Into Historical Perspective</a></li>
+				<li><a style="font-size: 20px;" href="https://www.theguardian.com/cities/2019/apr/12/life-swap-the-families-forced-to-trade-places-after-india-partition-india-pakistan-kolkata-dhaka">Life swap: the families forced to trade places after Indian Partition </a></li>
+				<li><a style="font-size: 20px;" href="https://www.hindustantimes.com/world-news/ancient-indian-writing-makes-a-mark-in-key-uk-review/story-CmGZZZMahgNwMXUiTUwJMI.html">Ancient Indian writing makes a mark in key UK review</a></li>
+				<li><a style="font-size: 20px;" href="https://www.nytimes.com/2019/04/08/books/review/qurratulain-hyder-river-of-fire.html">An Urdu Epic Puts India’s Partition Into Historical Perspective</a></li>
 			</ul>
 		</div>
-		<div class="well signin2 " style="overflow-y:scroll;padding-top: 0px;background-color:rgba(245,245,245,0.7);max-height: 600px;">
+		<div class="well signin2 " style="overflow-y:scroll;padding-top: 0px;background-color:rgba(245,245,245,0.8);max-height: 600px;">
 			<h1>Blog Posts</h1>
 			<ul>
 				{% for post in posts1 %}
-				<li><a style="font-size: 25px;" href="/post/{{post[0]}}">{{post[1]}}</a></li>
+				<li><a style="font-size: 20px;" href="/post/{{post[0]}}">{{post[1]}}</a></li>
 				{% endfor %}
 			</ul>
 		</div>

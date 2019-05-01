@@ -1,0 +1,76 @@
+{% extends "template.html" %}
+
+{% block extra_head %}
+<title>About</title>
+<script>
+    function setActive() {
+        var divs = document.querySelectorAll('#home');
+        for (var i = 0; i < divs.length; i++) {
+            divs[i].classList.add('active');
+        }
+    }
+</script>
+
+<style>
+#slideshow {
+  margin: 80px auto;
+  position: relative;
+  height: 550px;
+  width: 750px;
+  padding: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+#slideshow > div {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+}
+</style>
+
+
+<script>
+$("#slideshow > div:gt(0)").hide();
+
+$(document).ready(function(){
+    setInterval(function() {
+        $('#slideshow > div:first')
+            .fadeOut(1000)
+            .next()
+            .fadeIn(1000)
+            .end()
+            .appendTo('#slideshow');
+    }, 3000);
+})
+
+</script>
+	
+{% endblock extra_head %}
+
+
+
+{% block main_content %}
+
+
+
+<div id="slideshow">
+    <div>
+        <img src="static/img/s1.JPG" height="500px" width="700px">
+    </div>
+    <div>
+        <img src="static/img/s2.JPG" height="500px" width="700px">
+    </div>
+    <div>
+        <img src="static/img/s3.png" height="500px" width="700px">
+    </div>
+    <div>
+        <img src="static/img/s4.JPG" height="500px" width="700px">
+    </div>
+</div>
+     
+     
+
+<script>setActive();</script>
+{% endblock main_content %}

@@ -19,6 +19,8 @@
         }
         .navelement {
             font-size: 20px;
+            padding-bottom: 0px;
+            margin-bottom: 0px;
             font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
         .website-img {
@@ -55,10 +57,26 @@
                 margin-right: auto;
             }
         }
+        .navbar {
+            min-height: 30px;
+            font-family: Papyrus,fantasy;
+        }
+        body, a {
+            font-family: Big Caslon,Book Antiqua,Palatino Linotype,Georgia,serif !important;
+        }
+        h1 {
+            font-family: Big Caslon,Book Antiqua,Palatino Linotype,Georgia,serif !important;
+            font-weight: 800;
+            text-shadow: 1px 1px 2px white;
+        }
+        h3 {
+            font-weight: 600;
+            text-shadow: 1px 1px 2px white;
+        }
     </style>
 </head>
 
-<body style="background-color:burlywood;">
+<body style="background-color:#c7c0a6">
 	<div class="container-fluid" id="head">
 		<div class="website-img"><img src="/static/img/websitelogo1.png" id="img-website" height="120px"/></div>
         <div class="pull-right">
@@ -66,16 +84,16 @@
             <img src="/static/img/dh-logo.png" id="img-logo" height="60px"/>
         </div>
 	</div>
-	<nav class="navbar navbar-inverse" id="fix" style="background-color:rgb(201,166,125);">
+	<nav class="navbar navbar-inverse" id="fix" style="background-color:#918a71; margin-bottom: 0px;">
 		<div class="container-fluid" id="nav1">
 			<ul class="nav navbar-nav">
-				<li id="home"><a href="{{url_for('home')}}" class="navelement">Home</a></li>
-				<li id="about"><a href="#" class="navelement">About</a></li>
-                <li id="top"><a href="{{ url_for('top_posts') }}" class="navelement">Top Posts</a></li>
-                <li id="top1"><a href="{{url_for('top_blogs')}}" class="navelement">Top Blogs</a></li>
-				<li id="latest"><a href="{{url_for('post_list')}}" class="navelement">Latests Posts</a></li>
+				<li id="home" style="height: 35px; padding-bottom: 0px;"><a href="{{url_for('home')}}" class="navelement" style="padding-bottom: 12px; padding-top: 12px;">Home</a></li>
+				<li id="about" style="height: 35px; padding-bottom: 0px;"><a href="#" class="navelement" style="padding-bottom: 12px; padding-top: 12px;">About</a></li>
+                <li id="top" style="height: 35px; padding-bottom: 0px;"><a href="{{ url_for('top_posts') }}" class="navelement" style="padding-bottom: 12px; padding-top: 12px;">Top Posts</a></li>
+                <li id="top1" style="height: 35px; padding-bottom: 0px;"><a href="{{url_for('top_blogs')}}" class="navelement" style="padding-bottom: 12px; padding-top: 12px;">Top Blogs</a></li>
+				<li id="latest" style="height: 35px; padding-bottom: 0px;"><a href="{{url_for('post_list')}}" class="navelement" style="padding-bottom: 12px; padding-top: 12px;">Latests Posts</a></li>
 			</ul>
-            <div class="nav navbar-nav navbar-right dropdown" style="margin-right: 2px;padding: 5px;">
+            <div class="nav navbar-nav navbar-right dropdown" style="margin-right: 2px;">
                 <div class="dropdown-toggle" data-toggle="dropdown" style="font-size: 30px;">
                     <span class="glyphicon glyphicon-user"></span></div>
                 <ul class="dropdown-menu">
@@ -132,7 +150,7 @@
 			}
 		}
     </script>
-	<div class="container" id="fix1" style="background-image: url('/static/img/msq.jpg');background-size: cover;">
+	<div class="container" id="fix1" style="background-image: url('/static/img/msq.jpg');background-size: cover; margin-top:0px; padding-top:0px;">
 		<div style="min-height: 600px">
             {% block main_content %}
             {% endblock main_content %}    
