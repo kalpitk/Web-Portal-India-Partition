@@ -103,7 +103,7 @@ def post(post_id):
                   writer_username,approver_username,migrated,is_approved FROM post WHERE post_id = %s""", (post_id,))
   post_data = cursor.fetchall()
 
-  if not post_data[0][9] and not session.get('moderator') and user != post_data[0][7]:
+  if not post_data[0][10] and not session.get('moderator') and user != post_data[0][7]:
     return redirect(url_for('lost'))
   cursor.execute("""SELECT comment_id,name,comment,commented_time,is_user FROM comment WHERE post = %s""", (post_id,))
   comments = cursor.fetchall()
