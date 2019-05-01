@@ -31,7 +31,7 @@
 						<p style="color: red"><span class="glyphicon glyphicon glyphicon-chevron-down"></span>{{ post[3] }}</p>
 					</div>
 					<div class="postlink row" style="overflow: hidden; ">
-						<div class="col-lg-10" style="overflow: hidden; padding-right: 0px; margin-right: 0px; margin-left: 0px; padding-left: 0px;">
+						<div class="col-sm-9" style="overflow: hidden; padding-right: 0px; margin-right: 0px; margin-left: 0px; padding-left: 0px;">
 							<header>
 								<a href="{{url_for('post', post_id = post[0]) }}#nav1" style="font-size:20px;">{{ post[1] }}</a>
 									by <a href="{{url_for('profile', user = post[6])}}"><b>{{ post[6] }}</b></a>
@@ -40,7 +40,7 @@
 												
 							<p>{{ post[4][:20] }}...</p>
 					</div>
-					<div class="pull-right col-lg-2" style="padding-left: 0px;">
+					<div class="col-sm-2" style="padding-left: 0px;">
 							<img src="https://img.youtube.com/vi/Amg44-MX4ZM/1.jpg"></img>
 						</div>
 					</div>

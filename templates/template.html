@@ -14,13 +14,11 @@
         .navbar-inverse .navbar-nav>li>a {
             color: black;
         }
-        .active{
-            color:white;
-        }
         .navelement {
             font-size: 20px;
-            padding-bottom: 0px;
             margin-bottom: 0px;
+            padding-bottom: 12px !important;
+            padding-top: 12px !important;
             font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
         .website-img {
@@ -87,11 +85,11 @@
 	<nav class="navbar navbar-inverse" id="fix" style="background-color:#918a71; margin-bottom: 0px;">
 		<div class="container-fluid" id="nav1">
 			<ul class="nav navbar-nav">
-				<li id="home" style="height: 35px; padding-bottom: 0px;"><a href="{{url_for('home')}}" class="navelement" style="padding-bottom: 12px; padding-top: 12px;">Home</a></li>
-				<li id="about" style="height: 35px; padding-bottom: 0px;"><a href="#" class="navelement" style="padding-bottom: 12px; padding-top: 12px;">About</a></li>
-                <li id="top" style="height: 35px; padding-bottom: 0px;"><a href="{{ url_for('top_posts') }}" class="navelement" style="padding-bottom: 12px; padding-top: 12px;">Top Posts</a></li>
-                <li id="top1" style="height: 35px; padding-bottom: 0px;"><a href="{{url_for('top_blogs')}}" class="navelement" style="padding-bottom: 12px; padding-top: 12px;">Top Blogs</a></li>
-				<li id="latest" style="height: 35px; padding-bottom: 0px;"><a href="{{url_for('post_list')}}" class="navelement" style="padding-bottom: 12px; padding-top: 12px;">Latests Posts</a></li>
+				<li id="home"><a href="{{url_for('home')}}" class="navelement">Home</a></li>
+				<li id="about"><a href="{{url_for('about')}}" class="navelement" >About</a></li>
+                <li id="top"><a href="{{ url_for('top_posts') }}" class="navelement">Top Posts</a></li>
+                <li id="top1"><a href="{{url_for('top_blogs')}}" class="navelement">Top Blogs</a></li>
+				<li id="latest"><a href="{{url_for('post_list')}}" class="navelement">Latests Posts</a></li>
 			</ul>
             <div class="nav navbar-nav navbar-right dropdown" style="margin-right: 2px;">
                 <div class="dropdown-toggle" data-toggle="dropdown" style="font-size: 30px;">
@@ -110,12 +108,12 @@
             </div>
         </div>
         <div class="container-fluid" id="nav2">
-            <div data-toggle="collapse" data-target="#collapsednav" style="height: 30px;font-size: 30px;">
+            <div data-toggle="collapse" data-target="#collapsednav" style="height: 42px;font-size: 30px;">
                 <span class="glyphicon glyphicon-align-justify pull-right"></span>
             </div>
             <ul class="nav navbar-nav collapse" id="collapsednav">
                 <li id="home"><a href="{{url_for('home')}}" class="navelement">Home</a></li>
-                <li id="about"><a href="#" class="navelement">About</a></li>
+                <li id="about"><a href="{{url_for('about')}}" class="navelement">About</a></li>
                 <li id="top"><a href="{{ url_for('top_posts') }}" class="navelement">Top Posts</a></li>
                 <li id="top1"><a href="{{url_for('top_blogs')}}" class="navelement">Top Blogs</a></li>
                 <li id="latest"><a href="{{url_for('post_list')}}" class="navelement">Latests Posts</a></li>
