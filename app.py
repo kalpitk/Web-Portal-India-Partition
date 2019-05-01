@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import mysql.connector, hashlib, re
 from flask import (Flask, g, redirect, render_template, request, session, url_for)
+import json
 
 app = Flask(__name__)
 app.secret_key = 'sec key'
@@ -14,6 +15,8 @@ mydb = mysql.connector.connect(
 )
 cursor = mydb.cursor(buffered=True)
 
+with open('config.json') as json_file:  
+    data = json.load(json_file)
 
 @app.route("/")
 @app.route("/home", methods = ['POST', 'GET'])
@@ -32,7 +35,7 @@ def home():
   posts.reverse()
   posts1.reverse()
 
-  return render_template('home.html', res = res, posts = posts, posts1 = posts1)
+  return render_template('home.html', res = res, posts = posts, posts1 = posts1, mapKey = data['GoogleMapJSAPI'])
 
 @app.route("/sign_up_page", methods = ['POST', 'GET'])
 def sign_up_page():

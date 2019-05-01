@@ -3,7 +3,7 @@
 {% block extra_head %}
 <title>Partition Memories</title>
 	<script src="{{ url_for('static', filename='js/map.js') }}"></script>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key={{mapKey}}&callback=initMap">
 	</script>
 	<script> const coordinates = {{ res|tojson|safe }} </script>
 	<script>
