@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import mysql.connector, hashlib, re
 from flask import (Flask, g, redirect, render_template, request, session, url_for)
 
@@ -279,6 +280,8 @@ def sign_up():
 
   cursor.execute("""INSERT INTO user (username, name, email_id, password) VALUES (%s,%s,%s,%s)""", (username, name, email, password,))
   mydb.commit()
+
+  session['username'] = username
 
   return redirect(url_for('dashboard'))
 
