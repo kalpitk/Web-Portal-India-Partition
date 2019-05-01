@@ -22,7 +22,7 @@ def home():
   res = cursor.fetchall()
 
   cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
-						     writer_username,migrated FROM post WHERE is_approved IS TRUE AND is_blog IS FALSE ORDER BY upvotes""")
+						     writer_username,migrated, video_link FROM post WHERE is_approved IS TRUE AND is_blog IS FALSE ORDER BY upvotes""")
   posts = cursor.fetchall()
 
   cursor.execute("""SELECT post_id,nameofarticle,upvotes,downvotes,content,post_time,
@@ -49,7 +49,7 @@ def approve_post():
     return str(False)
   success = True
   try:
-    cursor.execute("UPDATE post SET is_approved is TRUE WHERE post_id=%s;",(post_id,))
+    cursor.execute("UPDATE post SET is_approved = TRUE WHERE post_id=%s;",(post_id,))
     mydb.commit()
   except:
     success = False
@@ -61,11 +61,16 @@ def vote_post():
   post_id = request.form.get('post_id')
   success = True
 
+  cursor.execute("SELECT writer_username from post WHERE post_id=%s", (post_id,))
+  author = cursor.fetchall()[0][0]
+
   try:
     if vote == '1':
       cursor.execute("UPDATE post SET upvotes = upvotes + 1 WHERE post_id=%s;",(post_id,))
+      cursor.execute("UPDATE user SET contributions = contributions + 1 WHERE username=%s;",(author,))
     else:
       cursor.execute("UPDATE post SET downvotes = downvotes + 1 WHERE post_id=%s;",(post_id,))
+      cursor.execute("UPDATE user SET contributions = contributions - 1 WHERE username=%s;",(author,))
     mydb.commit()
   except:
     success = False
@@ -321,7 +326,38 @@ def makepost():
   ytb = request.form.get('ytb')
   author = session.get('username')
 
-  cursor.execute("""INSERT INTO post (nameofarticle, content, video_link, post_time, writer_username) VALUES (%s,%s,%s,NOW(),%s)""", (title, content, ytb, author,))
+  coord1 = request.form.get('coord1')
+  coord2 = request.form.get('coord2')
+  coord3 = request.form.get('coord3')
+  coord4 = request.form.get('coord4')
+
+  cursor.execute("""SELECT mig_id FROM migration WHERE src_lat LIKE %s AND src_lng LIKE %s 
+                  AND dest_lat LIKE %s AND dest_lng LIKE %s""", (coord1, coord2, coord3, coord4,))
+  mig = cursor.fetchall()
+
+  if not len(mig):
+    cursor.execute("INSERT INTO migration (src_lat, src_lng, dest_lat, dest_lng) VALUES(%s,%s,%s,%s)", (coord1, coord2, coord3, coord4,))
+    cursor.execute("select LAST_INSERT_ID()")
+    mig_id = cursor.fetchall()[0][0]
+    mydb.commit()
+  else:
+    mig_id = mig[0][0]
+
+  pattern = '^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*'
+  ytb_id = re.findall(pattern, ytb)
+
+  # To fetch ytb_id[0][6] safely
+  if len(ytb_id):
+    ytb_id = ytb_id[0]
+  if len(ytb_id) > 6:
+    ytb_id = ytb_id[6]
+  else:
+    ytb_id = None
+
+  if ytb_id and len(ytb_id) != 11:
+    ytb_id = None
+
+  cursor.execute("""INSERT INTO post (nameofarticle, content, video_link, post_time, writer_username, migrated) VALUES (%s,%s,%s,NOW(),%s, %s)""", (title, content, ytb_id, author, mig_id,))
   mydb.commit()
 
   return redirect(url_for('dashboard'))

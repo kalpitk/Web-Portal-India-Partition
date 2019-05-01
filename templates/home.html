@@ -39,10 +39,12 @@
 							</header>
 												
 							<p>{{ post[4][:20] }}...</p>
-					</div>
-					<div class="pull-right col-lg-2" style="padding-left: 0px;">
-							<img src="https://img.youtube.com/vi/Amg44-MX4ZM/1.jpg"></img>
 						</div>
+						{% if post[8] %}
+						<div class="pull-right col-lg-2" style="padding-left: 0px;">
+							<img src="https://img.youtube.com/vi/{{post[8]}}/1.jpg"></img>
+						</div>
+						{% endif %}
 					</div>
 				</div>
 				{% endfor %}

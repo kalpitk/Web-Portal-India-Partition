@@ -4,10 +4,12 @@
 <title>{{ data[0][1] }}</title>
 <script>
 	$(document).ready(function(){
-		$('[data-toggle="tooltip"]').tooltip();   
+		$('[data-toggle="tooltip"]').tooltip();
+
 		$("#approve_post").click(function () {
 			var http = new XMLHttpRequest();
 			var url = "{{url_for('approve_post')}}";
+			
 			http.open("POST", url, true);
 			http.onreadystatechange = function() {
 				if(http.readyState == 4 && http.status == 200) {
@@ -17,7 +19,7 @@
 			var data1 = new FormData();
 			data1.append('post_id', '{{data[0][0]}}');
 			http.send(data1);
-		})
+		});
 
 		function vote(vote) {
 			var http = new XMLHttpRequest();
@@ -36,7 +38,7 @@
 
 		var migration1 = new XMLHttpRequest();
 		migration1.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200 && {{coord[0]}} && {{coord[1]}}) {
+			if (this.readyState == 4 && this.status == 200 && "{{coord[0]}}" != "None" && "{{coord[1]}}" != "None") {
 				var myArr = JSON.parse(this.responseText);
 				migration.innerText = myArr.features[0].place_name;
 			}
@@ -47,7 +49,7 @@
 
 		var migration2 = new XMLHttpRequest();
 		migration2.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200 && {{coord[2]}} && {{coord[3]}}) {
+			if (this.readyState == 4 && this.status == 200 && "{{coord[2]}}" != "None" && "{{coord[3]}}" != "None") {
 				var myArr = JSON.parse(this.responseText);
 				migration.innerHTML = "<b>" + migration.innerText + "</b>" + " to " + "<b>" + myArr.features[0].place_name + "</b>";
 			}
@@ -55,20 +57,20 @@
 
 		migration2.open("GET", "https://api.mapbox.com/geocoding/v5/mapbox.places/{{coord[3]}},{{coord[2]}}.json?access_token=sk.eyJ1Ijoia2FscGl0ayIsImEiOiJjanU2emc0YmUwMm1xNDNwaHhjbzJsc2g3In0.w4P1RZ_Mi8xbDL6Wbrh_2A", false);
 		migration2.send();
-	});
+	})
 </script>
 {% endblock extra_head %}
 
 {% block main_content %}
-	<h1> {{ data[0][1] }}
+	<h1> {{ data[0][1] }} </h1>
 	{% if session.get('moderator') and not data[0][10] %}
 	<button id="approve_post" name="approve_post" class="btn btn-primary">Approve</button>
-	{% endif %}</h1>
+	{% endif %}
 
 	{% if data[0][5] %}
 	<div style="margin-left:20px;" id="video">
 		<h2>Videos</h2>
-		<iframe width="560" height="315" src="{{ data[0][5] }}" frameborder="0"
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/{{ data[0][5] }}" frameborder="0"
 			allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
 			allowfullscreen></iframe>
 	</div>

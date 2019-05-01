@@ -2,34 +2,38 @@
 
 {% block extra_head %}
     <title>Make post</title>
-	
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/makeapost.css') }}">
-	<script src="{{ url_for('static', filename='js/map.js') }}"></script>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	</script>
 {% endblock %}
 
 {% block main_content %}
 <form class="space" action="/makepost" method="POST">
-	<p style="color:blue"><b>Title</b></p>
-	<textarea style="background-color: #888; border-radius: 10px" rows="1" cols="20" name="usrtxt" wrap="hard" >
-	</textarea>
-	<p style="color:blue"><b>Content</b></p>
-	<textarea style="background-color: #888; border-radius: 10px" rows="6" cols="100" name="usrtxt" wrap="hard" >
-	</textarea>
-	<p style="color:blue"><b>Language:</b></p>
-	<textarea style="background-color: #888; border-radius: 10px" rows="8" cols="100" name="usrtxt" wrap="hard">
-	</textarea>
-	<p style="color:blue"><b>Culture:</b></p>
-	<textarea style="background-color: #888; border-radius: 10px" rows="8" cols="100" name="usrtxt" wrap="hard">
-	</textarea>
-	<p style="color:blue"><b>Whatever is left:</b></p>
-	<textarea style="background-color: #888; border-radius: 10px" rows="8" cols="100" name="usrtxt" wrap="hard">
-	</textarea> 
-	<textarea id="content" name="content" rows="8" cols="100"></textarea>
-	<p style="color:blue"><b>youtube link:</b></p>
-	<input id="ytb" name="ytb"></input>
+	<fieldset class="form-group">
+		<label for="title" class="bmd-label-static">Title</label>
+		<input name="title" id="title" class="form-control" style="opacity: 0.85;" placeholder="Title"></input>
+	</fieldset>
+	<fieldset class="form-group">
+		<label for="content" class="bmd-label-static">Content</label>
+		<textarea rows="30" style="width:100%; opacity: 0.85;" class="form-control" name="content" id="content"></textarea>
+	</fieldset>
+	<fieldset class="form-group">
+		<label for="ytb" class="bmd-label-static">YouTube Video</label>
+		<input name="ytb" id="ytb" class="form-control" style="opacity: 0.85;" placeholder="Video Link"></input>
+	</fieldset>
+
+	<label class="bmd-label-static">Source</label>
+	<div class="input-group">
+		<input name="coord1" id="coord1" class="form-control" style="opacity: 0.85; width: 100px;" placeholder="Latitude"></input>
+		<input name="coord2" id="coord2" class="form-control" style="opacity: 0.85; width: 100px;" placeholder="Longitude"></input>
+	</div>
+
+	<label class="bmd-label-static">Destination</label>
+	<div class="input-group">
+		<input name="coord3" id="coord3" class="form-control" style="opacity: 0.85; width: 100px;" placeholder="Latitude"></input>
+		<input name="coord4" id="coord4" class="form-control" style="opacity: 0.85; width: 100px;" placeholder="Longitude"></input>
+	</div>
+
 	<br>
-	<button type="submit" class="submitit">Submit</button>
+	<button type="submit" class="btn btn-primary">Submit</button>
 </form>
 {% endblock main_content %}
