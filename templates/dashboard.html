@@ -34,6 +34,7 @@
 
 {% block main_content %}
 
+<div class="pull-right btn btn-danger" style="background-color: rgba(255,255,235,0.7);font-size:22px"><a herf="{{url_for('make_post_page')}}">Create Post</a></div>
 {% if ismod %}
 <ul class="nav nav-tabs" style="margin-bottom: 0px;">
 	<li><a href="#posted" onclick="return show('posted');">Posted</a></li>
