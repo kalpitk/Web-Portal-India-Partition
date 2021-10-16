@@ -1,25 +1,29 @@
 
-
-.footer 
-{
+.footer {
 	text-align: center;
 	height: 100px;
 	background-color: rgb(240, 221, 221);
 }
+
 .main {
 	margin-top: 10px;
 	margin-left: 10px;
 	margin-right: 10px;
 }
+
 .signin2 {
-	border :solid  green 6px;
+	border: solid green 6px;
 	position: fixed;
 }
+
 .map {
-	border :solid black;
+	border: solid black;
 	height: 1500px;
 }
 
 .navbar_item {
-	color: black;text-shadow: 1px 1px 2px white; font-size: 300px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	color: black;
+	text-shadow: 1px 1px 2px white;
+	font-size: 300px;
+	font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
