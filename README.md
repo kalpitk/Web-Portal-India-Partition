@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/kalpitk/Group-D.svg?branch=master)](https://travis-ci.org/kalpitk/Group-D)
 
 
-Web portal with various blog and videos about India's Parition. Built in association with Digital Humanities IIT Indore.
+Web portal with various blog and videos about India's Partition. Built in association with Digital Humanities IIT Indore.
 
 ## Course Project
 - CS258: Software Engineering
